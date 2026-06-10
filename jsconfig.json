@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/Components/": ["./src/Components/*"],
+      "@Navbar": ["./src/Components/Navbar/Navbar.jsx"],
+      "@Hero": ["./src/Components/Hero/Hero.jsx"]
+    }
+  },
+  "include": ["src"]
+}
