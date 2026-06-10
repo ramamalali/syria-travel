@@ -1,7 +1,7 @@
-import damas from '@/assets/images/damas.png'
-import halab from '@/assets/images/halab.png'
-import latakia from '@/assets/images/latakia.png'
-import homs from '@/assets/images/homs.png'
+import damas from '@public/images/damas.png'
+import halab from '@public/images/halab.png'
+import latakia from '@public/images/latakia.png'
+import homs from '@public/images/homs.png'
 
 function Destinations() {
   return (
