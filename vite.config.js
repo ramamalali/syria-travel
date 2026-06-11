@@ -17,6 +17,7 @@ export default defineConfig({
       '@Hero': fileURLToPath(new URL('./src/Components/Hero/Hero.jsx', import.meta.url)),
       '@AboutUs': fileURLToPath(new URL('./src/Components/AboutUs/AboutUs.jsx', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
-    }
+    },
+    base : '/syria-travel/'
   }
 })

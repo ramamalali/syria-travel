@@ -10,7 +10,9 @@ function Navbar() {
 <span className="font-headline-sm text-headline-sm font-bold text-primary">Sawa Travel</span>
 <div className="hidden md:flex gap-6">
 <a className="text-primary border-b-2 border-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#">الرئيسية</a>
-<a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#destinations">الوجهات</a>
+<a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#destinations">ابرز الوجهات</a>
+<a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#destinations">كنوزنا السياحية</a>
+<a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#destinations">الرحلات</a>
 <a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#offers">العروض</a>
 <a className="text-on-surface-variant hover:text-primary pb-1 font-body-md text-body-md cursor-pointer transition-colors" href="#contact">اتصل بنا</a>
 </div>
