@@ -4,10 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'url'
 
 
-
-// https://vite.dev/config/
 export default defineConfig({
+
+  base: '/syria-travel/', 
+  
   plugins: [react(), tailwindcss()],
+  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -17,7 +19,6 @@ export default defineConfig({
       '@Hero': fileURLToPath(new URL('./src/Components/Hero/Hero.jsx', import.meta.url)),
       '@AboutUs': fileURLToPath(new URL('./src/Components/AboutUs/AboutUs.jsx', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
-    },
-    base : '/syria-travel/'
+    }
   }
 })
