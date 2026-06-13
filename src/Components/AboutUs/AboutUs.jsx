@@ -1,4 +1,4 @@
-import sets from "@public/images/sets.png";
+import sets from "@/assets/images/sets.png";
 function AboutUs() {
   return (
     <>

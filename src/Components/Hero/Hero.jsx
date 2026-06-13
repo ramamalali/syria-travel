@@ -1,4 +1,4 @@
-import syriaBg from "@public/images/hero.png";
+import syriaBg from "@/assets/images/hero.png";
 
 function Hero() {
   return (
