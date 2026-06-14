@@ -6,6 +6,8 @@ import Destinations from "@/Components/Destinations/Destinations.jsx";
 import TuristDestinations from "@/Components/TuristDestinations/TuristDestinations.jsx";
 import SpecialOffers from "@/Components/SpecialOffers/SpecialOffers.jsx";
 import Testimonials from "@/Components/Testimonials/Testimonials.jsx";
+import ContactUs from "@/Components/ContactUs/ContactUs.jsx";
+import Footer from "@/Components/Footer/Footer.jsx";
 
 
 function HomePage() {
@@ -19,6 +21,8 @@ function HomePage() {
    <TuristDestinations/>
    <SpecialOffers/>
    <Testimonials/>
+   <ContactUs/>
+   <Footer/>
    </>
   )
 }
