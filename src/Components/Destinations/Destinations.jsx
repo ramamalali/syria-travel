@@ -10,10 +10,10 @@ function Destinations() {
 <div className="px-margin-desktop max-w-container-max mx-auto">
 <div className="flex justify-between items-end mb-12">
 <div>
-<h2 className="font-headline-lg text-headline-lg text-primary mb-2">أبرز الوجهات السياحية</h2>
+<h2 className="font-headline-lg text-headline-lg text-primary mb-2">كنوزنا الأثرية</h2>
 <p className="font-body-md text-body-md text-on-surface-variant">اختر وجهتك القادمة لاكتشاف عمق الحضارة السورية</p>
 </div>
-<button className="text-secondary font-label-md text-label-md flex items-center gap-1">عرض جميع الوجهات <span className="material-symbols-outlined">arrow_left</span></button>
+<button className="text-secondary font-label-md text-label-md flex items-center gap-1">عرض جميع الكنوز <span className="material-symbols-outlined">arrow_left</span></button>
 </div>
 <div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px]">
 

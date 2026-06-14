@@ -13,7 +13,7 @@ function Hero() {
 <h1 className="font-headline-lg text-headline-lg mb-6 leading-tight">سوا نسافر...<br/><span className="text-secondary-fixed">سوريا بكل تفاصيلها</span></h1>
 <p className="font-body-lg text-body-lg mb-10 text-surface-container-low opacity-90">اكتشف جمال المدن السورية، من عراقة دمشق إلى سحر الساحل. نوفر لك رحلات آمنة، مريحة، وبأعلى معايير الجودة.</p>
 <div className="flex flex-wrap gap-4">
-<button className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold shadow-lg flex items-center gap-3 hover:bg-secondary-fixed transition-all active:scale-95" onclick="toggleBookingModal()">
+<button className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold shadow-lg flex items-center gap-3 hover:bg-secondary-fixed transition-all active:scale-95" /* onClick={() => {toggleBookingModal}} */>
 <span className="material-symbols-outlined">directions_bus</span>
                         احجز رحلتك الآن
                     </button>
