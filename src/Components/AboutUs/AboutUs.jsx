@@ -2,7 +2,7 @@ import sets from "@/assets/images/sets.png";
 function AboutUs() {
   return (
     <>
-      <section className="py-24 px-margin-desktop max-w-container-max mx-auto">
+      <section className="py-24 px-margin-desktop max-w-container-max mx-auto" id="AboutUs">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="absolute -top-8 -right-8 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>

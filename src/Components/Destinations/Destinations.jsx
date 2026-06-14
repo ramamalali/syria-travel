@@ -6,7 +6,7 @@ import homs from '@/assets/images/homs.png'
 function Destinations() {
   return (
     <>
-    <section className="py-24 bg-surface-container-low">
+    <section className="py-24 bg-surface-container-low" id='destinations'>
 <div className="px-margin-desktop max-w-container-max mx-auto">
 <div className="flex justify-between items-end mb-12">
 <div>

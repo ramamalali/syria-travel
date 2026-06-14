@@ -5,13 +5,14 @@ import maaloula from '@/assets/images/malula.png'
 function TuristDestinations() {
   return (
     <>
-    <section className="py-24 px-margin-desktop max-w-container-max mx-auto">
+    <section className="py-24 px-margin-desktop max-w-container-max mx-auto" id='turistdestinations'>
 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
 <div className="max-w-xl">
 <h2 className="font-headline-lg text-headline-lg text-primary mb-4 leading-tight">رحلاتنا السياحية الخاصة</h2>
-<p className="text-on-surface-variant">انضم إلينا في رحلات استكشافية منظمة لأعظم المعالم الأثرية والطبيعية في سوريا.</p>
+<p className="text-on-surface-variant">انضم إلينا في رحلات  منظمة لأعظم المعالم الأثرية والطبيعية في سوريا.</p>
 </div>
-<button className="bg-primary text-on-primary px-8 py-3 rounded-full font-label-md text-label-md hover:shadow-lg transition-all">مشاهدة جميع الرحلات</button>
+
+<button className="text-secondary font-label-md text-label-md flex items-center gap-1">مشاهدة جميع الرحلات<span className="material-symbols-outlined">arrow_left</span></button>
 </div>
 <div className="grid grid-cols-12 gap-6">
 
