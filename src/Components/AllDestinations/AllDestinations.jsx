@@ -1,23 +1,33 @@
+
+import Navbar from "../Navbar/Navbar"
+import Footer from "../Footer/Footer"
+
+
 import hamah from '@/assets/images/hamah.png'
 import halab from '@/assets/images/halab.png'
 import latakia from '@/assets/images/latakia.png'
 import homs from '@/assets/images/homs.png'
+import tadmur from '@/assets/images/tadmour.png'
+import hosn from '@/assets/images/alhusn.png' 
+import sednaya from '@/assets/images/sednaya.png'
+import maaloula from '@/assets/images/malula.png'
+import damas from '@/assets/images/damas.png'
 
-import { Link } from "react-router";
 
 
-
-function Destinations() {
+function AllDestinations() {
   return (
     <>
-    <section className="py-24 bg-surface-container-low" id='destinations'>
+      <Navbar />
+
+  <section className="py-24 bg-surface-container-low" id='destinations'>
 <div className="px-margin-desktop max-w-container-max mx-auto">
 <div className="flex justify-between items-end mb-12">
 <div>
 <h2 className="font-headline-lg text-headline-lg text-primary mb-2">كنوزنا الأثرية</h2>
 <p className="font-body-md text-body-md text-on-surface-variant">اختر وجهتك القادمة لاكتشاف عمق الحضارة السورية</p>
 </div>
-<button className="text-secondary font-label-md text-label-md flex items-center gap-1"><span className="material-symbols-outlined">arrow_left</span><Link to="/all-destinations">عرض جميع الكنوز</Link></button>
+
 </div>
 <div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px]">
 
@@ -55,11 +65,56 @@ function Destinations() {
 <h3 className="font-headline-sm text-headline-sm">سحر تدمر</h3>
 </div>
 </div>
+<div className="relative group overflow-hidden rounded-xl cursor-pointer">
+<img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={tadmur}/>
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div className="absolute bottom-0 p-6 text-white">
+<h3 className="font-headline-sm text-headline-sm">سحر تدمر</h3>
+</div>
+</div>
+
+
+
+
+</div>
+<div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px]">
+
+<div className="relative group overflow-hidden rounded-xl cursor-pointer">
+<img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={hosn}/>
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div className="absolute bottom-0 p-6 text-white">
+<h3 className="font-headline-sm text-headline-sm">سحر تدمر</h3>
+</div>
+</div>
+<div className="relative group overflow-hidden rounded-xl cursor-pointer">
+<img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={sednaya}/>
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div className="absolute bottom-0 p-6 text-white">
+<h3 className="font-headline-sm text-headline-sm">سحر الحصن</h3>
+</div>
+</div>
+<div className="relative group overflow-hidden rounded-xl cursor-pointer">
+<img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={maaloula}/>
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div className="absolute bottom-0 p-6 text-white">
+<h3 className="font-headline-sm text-headline-sm">سحر معلولا</h3>
+</div>
+</div>
+<div className="relative group overflow-hidden rounded-xl cursor-pointer">
+<img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={damas}/>
+<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div className="absolute bottom-0 p-6 text-white">
+<h3 className="font-headline-sm text-headline-sm">سحر دمشق</h3>
+</div>
+</div>
 </div>
 </div>
 </section>
+
+      <Footer />
+
     </>
-  );
+  )
 }
 
-export default Destinations;
+export default AllDestinations
