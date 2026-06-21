@@ -77,7 +77,7 @@ function AllDestinations() {
 
 
 </div>
-<div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px]">
+<div className="grid md:grid-cols-3 md:grid-rows-2 gap-6 h-[800px]">
 
 <div className="relative group overflow-hidden rounded-xl cursor-pointer">
 <img alt="Palmyra ruins" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={hosn}/>

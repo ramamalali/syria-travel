@@ -143,3 +143,10 @@
   background-color: #001e40;
   border-radius: 10px;
 }
+/* تخصيص نقاط التنقل في أسفل الكاروسيل لتلائم الهوية البصرية */
+.testimonials-slider .swiper-pagination-bullet-active {
+  background-color: var(--md-sys-color-primary, #6750A4) !important; /* أو استخدمي كلاس اللون الخاص بك مباشرة */
+  width: 20px !important;
+  border-radius: 5px !important;
+  transition: all 0.3s ease;
+}
