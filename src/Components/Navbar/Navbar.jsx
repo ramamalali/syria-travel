@@ -1,4 +1,5 @@
-import  { useState } from "react";
+import { useState } from "react";
+import { navbarData } from "@/constants"; // استيراد بيانات الناف بار الديناميكية
 
 function Navbar() {
   // --- إدارات الحالة (States) ---
@@ -14,16 +15,6 @@ function Navbar() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-
-  // قائمة الروابط الأساسية
-  const navLinks = [
-    { name: "الرئيسية", href: "#" },
-    { name: "من نحن", href: "#AboutUs" },
-    { name: "كنوزنا الأثرية", href: "#destinations" },
-    { name: "الرحلات", href: "#turistdestinations" },
-    { name: "العروض", href: "#offers" },
-    { name: "اتصل بنا", href: "#contact" },
-  ];
 
   // معالجة تسجيل الدخول المحاكي
   const handleLoginSubmit = (e) => {
@@ -65,14 +56,14 @@ function Navbar() {
       <nav className="bg-surface sticky top-0 z-50 w-full h-16 shadow-sm border-b border-outline-variant bg-white">
         <div className="flex justify-between items-center px-margin-desktop max-w-container-max mx-auto h-full px-4">
           
-          {/* قسم الشعار والروابط */}
+          {/* قسم الشعار والروابط المجلوبة من ملف الداتا */}
           <div className="flex items-center gap-8">
             <span className="font-headline-sm text-headline-sm font-bold text-primary text-2xl">
-              Syria Travel
+              {navbarData.logo}
             </span>
             
             <div className="hidden md:flex gap-6 relative h-full items-center">
-              {navLinks.map((link) => (
+              {navbarData.navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
@@ -92,7 +83,7 @@ function Navbar() {
                 <a
                   href="#admin-dashboard"
                   onClick={() => setActiveTab("لوحة التحكم")}
-                  className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 text-secondary border-b-2 ${
+                  className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 text-secondary ${
                     activeTab === "لوحة التحكم"
                       ? "border-secondary font-bold"
                       : "border-transparent hover:text-secondary"
@@ -147,7 +138,7 @@ function Navbar() {
                 onClick={() => setIsLoginOpen(false)}
                 className="text-gray-400 hover:text-gray-600 p-1"
               >
-                <span className="material-symbols-outlined">إغلاق</span> ✕
+                ✕
               </button>
             </div>
             <form onSubmit={handleLoginSubmit} className="space-y-4">
@@ -161,7 +152,7 @@ function Navbar() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
                 />
-                <p className="text-[10px] text-gray-400 mt-1">تلميح للأدمن: admin@orbit.com وباسوورد: admin123</p>
+                <p className="text-[10px] text-gray-400 mt-1">{navbarData.adminHint}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>

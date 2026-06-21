@@ -1,5 +1,6 @@
-import  { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import syriaBg from "@/assets/images/hero.png";
+import { heroData } from "@/constants";
 
 function Hero() {
   // --- إدارات الحالة (States) ---
@@ -8,19 +9,13 @@ function Hero() {
   const [touristsCount, setTouristsCount] = useState(1); 
   const [selectedSeats, setSelectedSeats] = useState([]); 
   const [paymentOption] = useState("office"); 
+  const [selectedProgramType, setSelectedProgramType] = useState("type-1"); // حالة لإدارة نوع البرنامج المختار
 
   const scrollContainerRef = useRef(null);
-  const seatPrice = 120000; // تكلفة الفرد الواحد
-
-  const labels = {
-    1: "الخطوة 1: تحديد وجهتك",
-    2: "الخطوة 2: البرنامج والمقاعد",
-    3: "الخطوة 3: إتمام عملية الحجز",
-  };
+  const seatPrice = heroData.seatPrice; // جلب تكلفة الفرد الواحد من ملف الداتا
 
   // تحديث المقاعد المحجوزة تلقائياً عند تغيير عدد السياح
   useEffect(() => {
-    // نقوم بحجز مقاعد متتالية تبدأ من المقعد رقم 1 بناءً على عدد الأشخاص
     const seats = [];
     for (let i = 1; i <= touristsCount; i++) {
       seats.push(i);
@@ -73,24 +68,23 @@ function Hero() {
         <div className="relative z-10 px-margin-desktop max-w-container-max mx-auto w-full text-white">
           <div className="max-w-2xl">
             <h1 className="font-headline-lg text-headline-lg mb-6 leading-tight">
-              سوا نسافر...
+              {heroData.headline.main}
               <br />
-              <span className="text-secondary-fixed">سوريا بكل تفاصيلها</span>
+              <span className="text-secondary-fixed">{heroData.headline.sub}</span>
             </h1>
             <p className="font-body-lg text-body-lg mb-10 text-surface-container-low opacity-90">
-              اكتشف جمال المدن السورية، من عراقة دمشق إلى سحر الساحل. نوفر لك
-              رحلات آمنة، مريحة، وبأعلى معايير الجودة.
+              {heroData.description}
             </p>
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={handleOpenModal}
-                className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold shadow-lg flex items-center gap-3 hover:bg-secondary-fixed transition-all active:scale-95"
+                className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold shadow-lg flex items-center gap-3 hover:bg-secondary-fixed transition-all active:scale-95 cursor-pointer"
               >
                 <span className="material-symbols-outlined">directions_bus</span>
-                احجز رحلتك الآن
+                {heroData.ctaButtons.book}
               </button>
-              <button className="border-2 border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold hover:bg-white/10 transition-all active:scale-95"><a href="#turistdestinations">  استكشف الوجهات</a>
-              
+              <button className="border-2 border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-headline-sm text-headline-sm font-bold hover:bg-white/10 transition-all active:scale-95 cursor-pointer">
+                <a href="#turistdestinations">{heroData.ctaButtons.explore}</a>
               </button>
             </div>
           </div>
@@ -112,11 +106,11 @@ function Hero() {
               <div>
                 <h2 className="font-bold text-lg text-primary">حجز رحلة سياحية</h2>
                 <p className="text-sm text-on-surface-variant opacity-70">
-                  {labels[currentStep]}
+                  {heroData.modalLabels[currentStep]}
                 </p>
               </div>
               <button
-                className="p-2 hover:bg-surface-container rounded-full transition-colors"
+                className="p-2 hover:bg-surface-container rounded-full transition-colors cursor-pointer"
                 onClick={handleCloseModal}
               >
                 <span className="material-symbols-outlined text-primary">close</span>
@@ -133,14 +127,24 @@ function Hero() {
                   <div className="space-y-2">
                     <label className="font-label-md text-primary block">نوع البرنامج السياحي</label>
                     <div className="flex gap-3">
-                      <button className="flex-1 flex items-center justify-center gap-2 p-3 border-2 border-primary bg-primary-fixed/20 rounded-xl transition-all">
-                        <span className="material-symbols-outlined text-primary" data-weight="fill">temple_hindu</span>
-                        <span className="text-sm font-bold text-primary">آثار ومعالم</span>
-                      </button>
-                      <button className="flex-1 flex items-center justify-center gap-2 p-3 border-2 border-outline-variant/30 rounded-xl hover:border-primary/50 transition-all">
-                        <span className="material-symbols-outlined text-on-surface-variant">landscape</span>
-                        <span className="text-sm text-on-surface-variant">طبيعة واسترخاء</span>
-                      </button>
+                      {heroData.programTypes.map((type) => (
+                        <button
+                          key={type.id}
+                          onClick={() => setSelectedProgramType(type.id)}
+                          className={`flex-1 flex items-center justify-center gap-2 p-3 border-2 rounded-xl transition-all cursor-pointer ${
+                            selectedProgramType === type.id
+                              ? "border-primary bg-primary-fixed/20 text-primary"
+                              : "border-outline-variant/30 text-on-surface-variant hover:border-primary/50"
+                          }`}
+                        >
+                          <span className="material-symbols-outlined" data-weight={selectedProgramType === type.id ? "fill" : "normal"}>
+                            {type.icon}
+                          </span>
+                          <span className={`text-sm ${selectedProgramType === type.id ? "font-bold" : ""}`}>
+                            {type.label}
+                          </span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
@@ -149,7 +153,7 @@ function Hero() {
                     <div className="flex items-center border border-outline-variant/50 rounded-xl p-2 h-12 bg-white">
                       <button
                         onClick={() => setTouristsCount(Math.max(1, touristsCount - 1))}
-                        className="p-1.5 text-primary hover:bg-gray-100 rounded-lg"
+                        className="p-1.5 text-primary hover:bg-gray-100 rounded-lg cursor-pointer"
                       >
                         <span className="material-symbols-outlined">remove</span>
                       </button>
@@ -161,7 +165,7 @@ function Hero() {
                       />
                       <button
                         onClick={() => setTouristsCount(touristsCount + 1)}
-                        className="p-1.5 text-primary hover:bg-gray-100 rounded-lg"
+                        className="p-1.5 text-primary hover:bg-gray-100 rounded-lg cursor-pointer"
                       >
                         <span className="material-symbols-outlined">add</span>
                       </button>
@@ -187,7 +191,7 @@ function Hero() {
 
                   <div className="flex justify-end pt-4">
                     <button
-                      className="bg-primary text-on-primary w-full sm:w-auto px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-primary/20 transition-all flex items-center justify-center gap-2 group"
+                      className="bg-primary text-on-primary w-full sm:w-auto px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-primary/20 transition-all flex items-center justify-center gap-2 group cursor-pointer"
                       onClick={() => goToStep(2)}
                     >
                       <span>استعراض الرحلات السياحية</span>
@@ -208,13 +212,13 @@ function Hero() {
                           <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>tour</span>
                         </div>
                         <div>
-                          <div className="font-bold text-sm text-primary">جولة في مدينة تدمر التاريخية</div>
-                          <div className="text-xs text-on-surface-variant">الانطلاق: 07:30 ص من دمشق</div>
+                          <div className="font-bold text-sm text-primary">{heroData.availableTours.title}</div>
+                          <div className="text-xs text-on-surface-variant">{heroData.availableTours.time}</div>
                         </div>
                       </div>
                       <div className="text-left">
                         <div className="text-secondary text-sm font-bold">{(seatPrice).toLocaleString()} ل.س / للفرد</div>
-                        <div className="text-[9px] text-green-600 font-bold uppercase">متاحة</div>
+                        <div className="text-[10px] text-green-600 font-bold uppercase">{heroData.availableTours.status}</div>
                       </div>
                     </div>
                   </div>
@@ -253,14 +257,14 @@ function Hero() {
                   
                   <div className="flex justify-between items-center pt-4">
                     <button
-                      className="text-primary text-sm font-medium flex items-center gap-1 hover:translate-x-1 transition-transform"
+                      className="text-primary text-sm font-medium flex items-center gap-1 hover:translate-x-1 transition-transform cursor-pointer"
                       onClick={() => goToStep(1)}
                     >
                       <span className="material-symbols-outlined">arrow_forward</span>
                       <span>العودة</span>
                     </button>
                     <button
-                      className="bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-medium shadow-lg transition-all flex items-center gap-2"
+                      className="bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-medium shadow-lg transition-all flex items-center gap-2 cursor-pointer"
                       onClick={() => goToStep(3)}
                     >
                       <span>تأكيد البيانات</span>
@@ -279,7 +283,7 @@ function Hero() {
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
                           <p className="text-on-surface-variant">البرنامج وعدد الأفراد</p>
-                          <p className="font-bold text-primary">جولة تدمر ({touristsCount} أشخاص)</p>
+                          <p className="font-bold text-primary">{heroData.availableTours.title} ({touristsCount} أشخاص)</p>
                         </div>
                         <div>
                           <p className="text-on-surface-variant">المقاعد المخصصة</p>
@@ -320,7 +324,7 @@ function Hero() {
                         </span>
                       </div>
                       <button
-                        className="w-full bg-secondary text-primary font-bold py-4 rounded-xl text-md shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all"
+                        className="w-full bg-secondary text-primary font-bold py-4 rounded-xl text-md shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
                         onClick={confirmBooking}
                       >
                         تأكيد الحجز السياحي
@@ -329,7 +333,7 @@ function Hero() {
                   </div>
                   <div className="flex justify-start">
                     <button
-                      className="text-primary text-sm font-medium flex items-center gap-1 hover:translate-x-1 transition-transform"
+                      className="text-primary text-sm font-medium flex items-center gap-1 hover:translate-x-1 transition-transform cursor-pointer"
                       onClick={() => goToStep(2)}
                     >
                       <span className="material-symbols-outlined">arrow_forward</span>

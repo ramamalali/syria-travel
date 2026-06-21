@@ -150,3 +150,40 @@
   border-radius: 5px !important;
   transition: all 0.3s ease;
 }
+
+
+/* ============================================================ */
+/* تخصيص حاوية النقاط المخصصة في كاروسيل آراء المسافرين */
+/* ============================================================ */
+.testimonials-slider .custom-swiper-pagination {
+  transition: all 0.3s ease;
+  padding-top: 10px; /* دفع النقاط للأسفل قليلاً بعيداً عن حافة الكروت */
+}
+
+/* تخصيص النقطة النشطة */
+.testimonials-slider .custom-swiper-pagination .swiper-pagination-bullet-active {
+  /* تعيين اللون الـ primary الخاص بهويتك (استبدليه بكلاس لونك إذا كان مختلفاً) */
+  background-color: var(--md-sys-color-primary, #4513cf) !important;
+  width: 18px !important; /* جعل النقطة النشطة أطول (تأثير احترافي) */
+  border-radius: 6px !important;
+
+}
+
+/* تخصيص النقاط غير النشطة */
+.testimonials-slider .custom-swiper-pagination .swiper-pagination-bullet {
+  background-color: var(--md-sys-color-primary-container, #615870) !important;
+  opacity: 0.7;
+}
+
+/* تصحيح تأثير dynamicBullets ليتوافق مع الحاوية الجديدة */
+.testimonials-slider .custom-swiper-pagination.swiper-pagination-lock {
+  display: none !important;
+}
+.swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-horizontal.swiper-pagination-bullets {
+    &.swiper-pagination-bullets-dynamic {
+        left: 50%;
+        transform: translateX(0%) !important;
+        white-space: nowrap;
+        /* color: var(--color-on-secondary); */
+    }
+}
