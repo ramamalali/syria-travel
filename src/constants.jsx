@@ -7,6 +7,7 @@ import hosn from '@/assets/images/alhusn.png'
 import sednaya from '@/assets/images/sednaya.png'
 import maaloula from '@/assets/images/malula.png'
 import damas from '@/assets/images/damas.png'
+import tartous from '@/assets/images/tartous.png'
 
 
 
@@ -99,7 +100,7 @@ export const destinationsSectionData = {
     },
     {
       id: "dest-halab",
-      title: "قلعة حلب وأسواقها",
+      title: "حلب",
       description: "تجربة تسوق تراثية وتاريخية لا مثيل لها",
       alt: "Aleppo Citadel",
       image: halab,
@@ -110,7 +111,7 @@ export const destinationsSectionData = {
     },
     {
       id: "dest-latakia",
-      title: "استجمام الساحل",
+      title: "اللاذقية",
       description: "سحر الطبيعة البحرية والغروب الساحر",
       alt: "Latakia coastline",
       image: latakia,
@@ -121,7 +122,7 @@ export const destinationsSectionData = {
     },
     {
       id: "dest-homs",
-      title: "سحر حمص",
+      title: " حمص",
       description: "عراقة المدينة الحمصية القديمة وأسواقها",
       alt: "Homs heritage",
       image: homs,
@@ -131,40 +132,40 @@ export const destinationsSectionData = {
       paddingClass: "p-6"
     },
     {
-      id: "dest-tadmur",
-      title: "سحر تدمر",
-      description: "عروس البادية السورية الشاهدة على التاريخ",
-      alt: "Palmyra ruins",
-      image: tadmur,
+      id: "dest-tartous",
+      title: "طرطوس",
+      description: "من اجمل المدن السورية",
+      alt: "tartous",
+      image: tartous,
       featured: false, // تظهر في صفحة الكل فقط
     },
     {
-      id: "dest-hosn",
-      title: "قلعة الحصن",
-      description: "أعظم القلاع العسكرية في القرون الوسطى",
-      alt: "Krak des Chevaliers",
+      id: "dest-rackah",
+      title: "الرقة",
+      description: "عروس الفرات",
+      alt: "rackah",
       image: hosn,
       featured: false,
     },
     {
-      id: "dest-sednaya",
+      id: "dest-deralzor",
       title: "سحر صيدنايا",
       description: "أجواء روحانية وتاريخ مسيحي موغل في القدم",
-      alt: "Sednaya monastery",
+      alt: "deralzor",
       image: sednaya,
       featured: false,
     },
     {
-      id: "dest-maaloula",
-      title: "سحر معلولا",
+      id: "dest-alhasaka",
+      title: "الحسكة",
       description: "بلدة الصخر والتاريخ المتحدثة بالآرامية",
-      alt: "Maaloula village",
+      alt: "alhasaka",
       image: maaloula,
       featured: false,
     },
     {
       id: "dest-damas",
-      title: "سحر دمشق",
+      title: "دمشق",
       description: "أقدم عاصمة مأهولة في التاريخ وياسمينها العتيق",
       alt: "Old Damascus",
       image: damas,
@@ -172,95 +173,464 @@ export const destinationsSectionData = {
     }
   ]
 };
-
-export const toursSectionData = {
-  title: "رحلاتنا السياحية الخاصة",
-  description: "انضم إلينا في رحلات منظمة لأعظم المعالم الأثرية والطبيعية في سوريا.",
-  viewAllText: "مشاهدة جميع الرحلات",
+// بيانات المناطق الأثرية (يمكنك نقلها إلى ملف constants لاحقاً إذا أردت)
+export const provinceData = {
+  provinceName: "محافظة دمشق وريفها",
+  title: "كنوز التاريخ والأصالة",
+  description: "استكشف أعرق المواقع الأثرية في العالم، حيث تلتقي الحضارات وتتنفس الجدران حكايات التاريخ.",
+  backText: "العودة للرئيسية",
   items: [
     {
-      id: "tour-tadmur",
-      title: "تدمر: لؤلؤة البادية",
-      bookingName: "جولة تدمر الأثرية",
-      description: "رحلة تاريخية لمدة يومين تشمل زيارة القلعة، الشارع المستقيم، وفندق بل موني.",
-      price: "150,000 ل.س / للشخص",
-      image: tadmur,
-      alt: "Palmyra",
-      featured: true, // ستظهر في الصفحة الرئيسية
-      gridClass: "col-span-12 md:col-span-8 h-[400px] p-10",
-      titleClass: "font-headline-lg text-headline-lg mb-2"
+      id: 1,
+      title: "الجامع الأموي الكبير",
+      location: "دمشق القديمة",
+      description: "لؤلؤة العمارة الإسلامية ومن أقدم وأعظم المساجد في العالم، يجسد تلاحم الحضارات المتعاقبة.",
+      image: "https://images.unsplash.com/photo-1590075865003-e48277adc558?auto=format&fit=crop&w=800&q=80", // رابط تجريبي لصورة أثرية
+      tags: ["تاريخي", "ديني"],
     },
     {
-      id: "tour-hosn",
-      title: "قلعة الحصن",
-      bookingName: "رحلة قلعة الحصن المعمارية",
-      description: "أهم القلاع في العالم.",
-      price: "150,000 ل.س / للشخص",
-      image: hosn,
-      alt: "Krak",
+      id: 2,
+      title: "مدينة معلولا الأثرية",
+      location: "قلمون، ريف دمشق",
+      description: "الحاضنة التاريخية الفريدة التي تنبض بالحياة، حيث ما زال سكانها يتحدثون اللغة الآرامية، لغة السيد المسيح.",
+      image: "https://images.unsplash.com/photo-1547149603-d558e6012445?auto=format&fit=crop&w=800&q=80",
+      tags: ["أثري", "ثقافي"],
+    },
+    {
+      id: 3,
+      title: "قصر العظم",
+      location: "البزورية، دمشق القديمة",
+      description: "نموذج ساحر للعمارة الدمشقية الفريدة في العهد العثماني، يتميز ببحيراته الرخامية وحدائقه الغناء.",
+      image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80",
+      tags: ["عمارة", "متحف"],
+    },
+    {
+      id: 4,
+      title: "سوق الحميدية والقلعة",
+      location: "مدخل دمشق القديمة",
+      description: "أشهر أسواق الشرق وأكثرها عراقة، مغطى بسقف حديدي مخرم تنفذ منه أشعة الشمس، وينتهي بأسوار قلعة دمشق.",
+      image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80",
+      tags: ["سياحي", "أسواق"],
+    },
+    {
+      id: 5,
+      title: "دير مار تقلا",
+      location: "معلولا، ريف دمشق",
+      description: "دير منحوت في الصخر يضم الفج الصخري الشهير والمياه المقدسة، ويعد مزاراً سياحياً وتاريخياً عالمياً.",
+      image: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=800&q=80",
+      tags: ["أثري", "ديني"],
+    },
+    {
+      id: 6,
+      title: "التكية السليمانية",
+      location: "ضفاف نهر بردى، دمشق",
+      description: "تحفة معمارية صممها المعماري الشهير سنان، وتعتبر اليوم مركزاً للحفاظ على الحرف والمهن اليدوية الدمشقية التراثية.",
+      image: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=800&q=80",
+      tags: ["تراث", "عمارة"],
+    }
+  ]
+};
+export const toursSectionData = {
+  title: "رحلاتنا السياحية للمحافظات",
+  description: "اكتشف الكنوز الأثرية لكل محافظة سورية من خلال جولاتنا الشاملة والمنظمة.",
+  viewAllText: "مشاهدة جميع المحافظات",
+  items: [
+    {
+      id: "tour-homs",
+      province: "حمص",
+      title: "جولة حمص الأثرية الكبرى",
+      bookingName: "برنامج جولة محافظة حمص المتكامل",
+      description: "رحلة شاملة تشمل زيارة قلاع حمص العريقة، أسواقها العتيقة، مزاراتها الدينية الكبرى لثلاثة أيام.",
+      price: "450,000 ل.س / للشخص",
+      image: hosn, // يمكنك استخدام الصورة المناسبة
+      alt: "Homs Tour",
+      featured: true,
+      gridClass: "col-span-12 md:col-span-8 h-[400px] p-10",
+      titleClass: "font-headline-lg text-headline-lg mb-2",
+      details: {
+        fullDescription: "جولة تاريخية عريضة تبدأ من ريف حمص الغربي صعوداً إلى القلاع المعمارية الفخمة، مرواً بوسط المدينة التاريخي وأحيائها القديمة ومزاراتها المقدسة.",
+        landmarksToVisit: [
+          "قلعة الحصن المعمارية الشهيرة", 
+          "جامع خالد بن الوليد التاريخي", 
+          "كنيسة أم الزنار الأثرية", 
+          "أسواق حمص القديمة والقيصريات"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية (فندق السفير حمص)",
+        bookingStart: "بدأ الحجز وينتهي قبل الرحلة بيومين",
+        tourDate: "الخميس القادم الساعة 07:30 صباحاً"
+      }
+    },
+    {
+      id: "tour-damascus",
+      province: "دمشق وريفها",
+      title: "أصالة الشام وصيدنايا",
+      bookingName: "برنامج جولة دمشق وريفها الأثرية",
+      description: "جولة بين أقدم عاصمة مأهولة في التاريخ وأديرة جبال ريف دمشق الشامخة.",
+      price: "350,000 ل.س / للشخص",
+      image: sednaya,
+      alt: "Damascus Tour",
       featured: true,
       gridClass: "col-span-12 md:col-span-4 h-[400px] p-8",
-      titleClass: "font-headline-sm text-headline-sm font-bold mb-1"
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "مسار سياحي مميز يربط الحارات الشامية القديمة داخل السور بجمال وروحانية الفجاج والأديرة الصخرية العتيقة في معلولا وصيدنايا.",
+        landmarksToVisit: [
+          "الجامع الأموي الكبير بدمشق", 
+          "سوق الحميدية ومدحت باشا", 
+          "دير سيدة صيدنايا الجبلي", 
+          "أديرة وفج معلولا الأثرية"
+        ],
+        duration: "يومين - ليلة واحدة",
+        hotelStay: "تتضمن مبيت في بيت ضيافة شامي تراثي",
+        bookingStart: "متاح للحجز الآن",
+        tourDate: "الجمعة القادمة الساعة 08:00 صباحاً"
+      }
     },
     {
-      id: "tour-sednaya",
-      title: "صيدنايا",
-      bookingName: "زيارة صيدنايا والطبيعة",
-      description: "سكينة وهدوء الجبال.",
-      price: "150,000 ل.س / للشخص",
-      image: sednaya,
-      alt: "Sednaya",
+      id: "tour-aleppo",
+      province: "حلب",
+      title: "عاصمة الطرب والشهباء",
+      bookingName: "جولة محافظة حلب التاريخية",
+      description: "رحلة وثائقية لأضخم القلاع وأعرق الأسواق المسقوفة في العالم.",
+      price: "500,000 ل.س / للشخص",
+      image: halab,
+      alt: "Aleppo Tour",
       featured: true,
       gridClass: "col-span-12 md:col-span-4 h-[300px] p-6",
-      titleClass: "font-headline-sm text-headline-sm font-bold mb-1"
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "جولة غنية في عاصمة الشمال السوري، تركز على العمارة العسكرية الإسلامية والأسواق التراثية المسقوفة التي تروي قصص طريق الحرير الممتد.",
+        landmarksToVisit: [
+          "قلعة حلب وأبراجها الضخمة", 
+          "الأسواق القديمة المستقيمة (المدينة)", 
+          "المدرسة الحلوية الأثرية", 
+          "خان الشونة والصاغة القديم"
+        ],
+        duration: "4 أيام - 3 ليالي",
+        hotelStay: "تتضمن إقامة فندقية (فندق شهباء حلب)",
+        bookingStart: "مفتوح حالياً وحتى اكتمال المقاعد",
+        tourDate: "الأحد القادم الساعة 06:00 صباحاً"
+      }
     },
     {
-      id: "tour-maaloula",
-      title: "معلولا: لغة التاريخ",
-      bookingName: "جولة معلولا التاريخية",
-      description: "جولة في المدينة التي لا تزال تتحدث الآرامية، لغة السيد المسيح.",
-      price: "150,000 ل.س / للشخص",
-      image: maaloula,
-      alt: "Maaloula",
+      id: "tour-coast",
+      province: "اللاذقية وطرطوس",
+      title: "جولة الساحل وأوغاريت",
+      bookingName: "برنامج جولة محافظات الساحل الأثرية",
+      description: "تاريخ ممتد من أول أبجدية في العالم وصولاً إلى الجزر والقلاع البحرية الصليبية.",
+      price: "400,000 ل.س / للشخص",
+      image: latakia,
+      alt: "Coast Tour",
       featured: true,
       gridClass: "col-span-12 md:col-span-8 h-[300px] p-10",
-      titleClass: "font-headline-md text-headline-md font-bold mb-1"
-    },
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "رحلة تجمع سحر البحر الأبيض المتوسط بعمق التاريخ، حيث نمر على قلاع الجبال والحصون البحرية وموقع اكتشاف الأبجدية الأولى.",
+        landmarksToVisit: [
+          "مملكة أوغاريت الأثرية برأس شمرا", 
+          "قلعة صلاح الدين الأيوبي بالجبال", 
+          "جزيرة أرواد البحرية الكنعانية", 
+          "برج صافيتا الأثري الشهير"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية مطلة على البحر",
+        bookingStart: "متاح للتثبيت الفوري",
+        tourDate: "الجمعة القادمة الساعة 07:00 صباحاً"
+      }
+    }
+  ]
+};
+
+export const allToursData = {
+  title: "جميع الرحلات السياحية للمحافظات السورية",
+  description: "استكشف الكنوز الأثرية والتاريخية الممتدة عبر كافة المحافظات من قلب البادية وحتى قمم الجبال الساحلية.",
+  items: [
     {
-      id: "tour-hamah",
-      title: "جولة نواعير حماه",
-      bookingName: "جولة نواعير حماه",
-      description: "رحلة تاريخية لمدة يومين تشمل زيارة النواعير وأفاميا وفندق بل موني.",
-      price: "150,000 ل.س / للشخص",
-      image: hamah,
-      alt: "Hamah",
-      featured: false, // تظهر في صفحة الكل فقط
+      id: "all-tour-homs",
+      province: "حمص",
+      title: "جولة حمص الأثرية الكبرى",
+      bookingName: "برنامج جولة محافظة حمص المتكامل",
+      description: "رحلة شاملة تشمل زيارة قلاع حمص العريقة، أسواقها العتيقة، مزاراتها الدينية الكبرى لثلاثة أيام.",
+      price: "450,000 ل.س / للشخص",
+      image: hosn,
+      alt: "Homs Tour",
+      featured: true,
       gridClass: "col-span-12 md:col-span-8 h-[400px] p-10",
-      titleClass: "font-headline-lg text-headline-lg mb-2"
+      titleClass: "font-headline-lg text-headline-lg mb-2",
+      details: {
+        fullDescription: "جولة تاريخية عريضة تبدأ من ريف حمص الغربي صعوداً إلى القلاع المعمارية الفخمة، مرواً بوسط المدينة التاريخي وأحيائها القديمة ومزاراتها المقدسة.",
+        landmarksToVisit: [
+          "قلعة الحصن المعمارية الشهيرة", 
+          "جامع خالد بن الوليد التاريخي", 
+          "كنيسة أم الزنار الأثرية", 
+          "أسواق حمص القديمة والقيصريات"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية (فندق السفير حمص)",
+        bookingStart: "بدأ الحجز وينتهي قبل الرحلة بيومين",
+        tourDate: "الخميس القادم الساعة 07:30 صباحاً"
+      }
     },
     {
-      id: "tour-halab",
-      title: "قلعة حلب",
-      bookingName: "رحلة قلعة حلب المعمارية",
-      description: "أعرق وأضخم القلاع التاريخية المأهولة.",
-      price: "150,000 ل.س / للشخص",
-      image: halab,
-      alt: "Aleppo",
-      featured: false,
+      id: "all-tour-damascus",
+      province: "دمشق وريفها",
+      title: "أصالة الشام وصيدنايا",
+      bookingName: "برنامج جولة دمشق وريفها الأثرية",
+      description: "جولة بين أقدم عاصمة مأهولة في التاريخ وأديرة جبال ريف دمشق الشامخة.",
+      price: "350,000 ل.س / للشخص",
+      image: sednaya,
+      alt: "Damascus Tour",
+      featured: true,
       gridClass: "col-span-12 md:col-span-4 h-[400px] p-8",
-      titleClass: "font-headline-sm text-headline-sm font-bold mb-1"
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "مسار سياحي مميز يربط الحارات الشامية القديمة داخل السور بجمال وروحانية الفجاج والأديرة الصخرية العتيقة في معلولا وصيدنايا.",
+        landmarksToVisit: [
+          "الجامع الأموي الكبير بدمشق", 
+          "سوق الحميدية والشارع المستقيم", 
+          "دير سيدة صيدنايا الجبلي", 
+          "أديرة وفج معلولا الأثرية"
+        ],
+        duration: "يومين - ليلة واحدة",
+        hotelStay: "تتضمن مبيت في بيت ضيافة شامي تراثي",
+        bookingStart: "متاح للحجز الآن",
+        tourDate: "الجمعة القادمة الساعة 08:00 صباحاً"
+      }
     },
     {
-      id: "tour-latakia",
-      title: "بحر اللاذقية",
-      bookingName: "زيارة بحر اللاذقية والطبيعة",
-      description: "سكينة وهدوء ومناظر خلابة على شواطئ الساحل السوري.",
-      price: "150,000 ل.س / للشخص",
-      image: latakia,
-      alt: "Latakia",
-      featured: false,
+      id: "all-tour-aleppo",
+      province: "حلب",
+      title: "عاصمة الطرب والشهباء",
+      bookingName: "جولة محافظة حلب التاريخية",
+      description: "رحلة وثائقية لأضخم القلاع وأعرق الأسواق المسقوفة في العالم.",
+      price: "500,000 ل.س / للشخص",
+      image: halab,
+      alt: "Aleppo Tour",
+      featured: true,
       gridClass: "col-span-12 md:col-span-4 h-[300px] p-6",
-      titleClass: "font-headline-sm text-headline-sm font-bold mb-1"
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "جولة غنية في عاصمة الشمال السوري، تركز على العمارة العسكرية الإسلامية والأسواق التراثية المسقوفة التي تروي قصص طريق الحرير الممتد.",
+        landmarksToVisit: [
+          "قلعة حلب وأبراجها الضخمة", 
+          "الأسواق القديمة المستقيمة (المدينة)", 
+          "المدرسة الحلوية الأثرية", 
+          "خان الشونة والصاغة القديم"
+        ],
+        duration: "4 أيام - 3 ليالي",
+        hotelStay: "تتضمن إقامة فندقية (فندق شهباء حلب)",
+        bookingStart: "مفتوح حالياً وحتى اكتمال المقاعد",
+        tourDate: "الأحد القادم الساعة 06:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-latakia",
+      province: "اللاذقية",
+      title: "عروس الساحل وأوغاريت",
+      bookingName: "برنامج جولة محافظة اللاذقية",
+      description: "تاريخ ممتد من أول أبجدية في العالم وصولاً إلى الجبال الخضراء المطلة على البحر.",
+      price: "400,000 ل.س / للشخص",
+      image: latakia,
+      alt: "Latakia Tour",
+      featured: true,
+      gridClass: "col-span-12 md:col-span-8 h-[300px] p-10",
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "رحلة تجمع سحر البحر الأبيض المتوسط بعمق التاريخ الفينيقي، حيث نمر على قلاع الجبال وموقع اكتشاف الأبجدية الأولى وغابات كسب الخلابة.",
+        landmarksToVisit: [
+          "مملكة أوغاريت الأثرية برأس شمرا", 
+          "قلعة صلاح الدين الأيوبي بالجبال", 
+          "الآثار الرومانية في القنوات والمدينة القديمة",
+          "غابات وقمم كسب الخضراء"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية (فندق أفاميا الشام أو منتجع روتانا)",
+        bookingStart: "متاح للتثبيت الفوري",
+        tourDate: "الجمعة القادمة الساعة 07:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-tartous",
+      province: "طرطوس",
+      title: "قلاع البحر والتاريخ الكنعاني",
+      bookingName: "برنامج جولة محافظة طرطوس",
+      description: "اكتشف معالم الجزيرة المأهولة الوحيدة في سوريا وقلاع طرطوس الشامخة.",
+      price: "380,000 ل.س / للشخص",
+      image: tartous, // تأكدي من استيراد الصور في الأعلى
+      alt: "Tartous Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-6 h-[350px] p-8",
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "رحلة ساحلية فريدة مخصصة لاستكشاف المواقع الفينيقية البحرية، وزيارة الكاتدرائيات والقلاع الصليبية التاريخية المنتشرة في ريف المحافظة الجبلي.",
+        landmarksToVisit: [
+          "جزيرة أرواد البحرية التاريخية", 
+          "قلعة مرقب الضخمة بريف بانياس", 
+          "برج صافيتا الأثري الشامخ", 
+          "عمريت الأثرية (الملعب والمعبد الفينيقي)"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية (فندق شاهين طرطوس)",
+        bookingStart: "متاح للحجز",
+        tourDate: "الأربعاء القادم الساعة 08:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-hama",
+      province: "حماة",
+      title: "أصالة النواعير ومملكة أفاميا",
+      bookingName: "برنامج جولة محافظة حماة الشاملة",
+      description: "رحلة عبق التاريخ لسماع صوت النواعير الأثرية واستكشاف أعمدة أفاميا العملاقة.",
+      price: "320,000 ل.س / للشخص",
+      image: hamah,
+      alt: "Hama Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-6 h-[350px] p-8",
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "رحلة تجمع هدوء نهر العاصي في قلب حماة بعظمة المدرجات والأعمدة الرومانية والبيزنطية الشاهقة في ريفها الشمالي والغربي.",
+        landmarksToVisit: [
+          "نواعير حماة الأثرية الكبرى الكائنة على العاصي", 
+          "موقع أفاميا الأثري والشارع المستقيم الطويل", 
+          "قصر العظم الأثري (متحف التقاليد الشعبية)", 
+          "قلعة شيزر التاريخية المشرفة على النهر"
+        ],
+        duration: "يومين - ليلة واحدة",
+        hotelStay: "تتضمن مبيت في فندق أفاميا الشام حماة",
+        bookingStart: "متاح الآن",
+        tourDate: "الخميس القادم الساعة 07:30 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-palmyra",
+      province: "دير الزور والرقة (البادية السورية)",
+      title: "لؤلؤة الفرات وآثار ماري",
+      bookingName: "برنامج جولة وادي الفرات والبادية",
+      description: "رحلة استكشافية عميقة لحواضر وادي الفرات وممالكها القديمة الممتدة.",
+      price: "480,000 ل.س / للشخص",
+      image: /* deirEzzor */null,
+      alt: "Deir Ezzor Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-6 h-[350px] p-8",
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "مسار استكشافي لعشاق الحضارات القديمة، يتتبع ضفاف نهر الفرات الخالد لزيارة القلاع المنيعة والممالك الطينية والحجرية الأولى في الشرق الأدنى.",
+        landmarksToVisit: [
+          "مملكة ماري (تل الحريري) التاريخية", 
+          "موقع دورا أوروبوس (صالحية الفرات)", 
+          "قلعة رحبة مالك بن طوق الأثرية", 
+          "قلعة جعفر الأثرية على بحيرة الأسد"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن مبيت فندقي مجهز بالكامل لراحة السياح",
+        bookingStart: "ينتهي الحجز قريباً لتنظيم الموافقات",
+        tourDate: "الجمعة بعد القادمة الساعة 06:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-idlib",
+      province: "إدلب",
+      title: "المدن الميتة ومملكة إيبلا",
+      bookingName: "برنامج جولة محافظة إدلب الأثرية",
+      description: "رحلة استثنائية لاستكشاف القرى والمدن المنسية البيزنطية ومتحف إيبلا العريق.",
+      price: "360,000 ل.س / للشخص",
+      image: /* idlib */ null,
+      alt: "Idlib Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-6 h-[350px] p-8",
+      titleClass: "font-headline-md text-headline-md font-bold mb-1",
+      details: {
+        fullDescription: "جولة تاريخية متخصصة في ريف المحافظة الغني بأكبر تجمع للمدن الأثرية المنسية (المدن الميتة) التي تعود للقرون الأولى، مع زيارة حاضرة إيبلا.",
+        landmarksToVisit: [
+          "موقع مملكة إيبلا الأثرية (تل مرديخ)", 
+          "القرى الأثرية المنسية في جبل الزاوية بارا وسيرجيلا", 
+          "كنيسة قلب لوزة البيزنطية الشهيرة", 
+          "متحف معرة النعمان للفسيفساء الأثرية"
+        ],
+        duration: "يومين - ليلة واحدة",
+        hotelStay: "تتضمن إقامة في بيت ضيافة محلي مجهز",
+        bookingStart: "الحجز متاح",
+        tourDate: "السبت القادم الساعة 08:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-sweida",
+      province: "السويداء",
+      title: "أعمدة البازلت الأسود بمملكة قنوات",
+      bookingName: "برنامج جولة محافظة السويداء",
+      description: "رحلة عبر العمارة البازلتية الفريدة لروما القديمة والأنباط بجنوب سوريا.",
+      price: "310,000 ل.س / للشخص",
+      image: /* sweida */ null,
+      alt: "Sweida Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-4 h-[350px] p-6",
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "جولة تاريخية ساحرة في جنوب سوريا لاستكشاف المدن المبنية بالكامل من الحجر البازلتي الأسود البركاني، والوقوف على بقايا المعابد النبطية والرومانية الشامخة.",
+        landmarksToVisit: [
+          "موقع قنوات الأثري معابد ومسارح (كاناثا)", 
+          "مدينة شهبا (فليبوبوليس) ومسرحها الإمبراطوري", 
+          "متحف السويداء للفسيفساء النادرة", 
+          "معبد مشنق النبطي الأثري"
+        ],
+        duration: "يومين - ليلة واحدة",
+        hotelStay: "تتضمن مبيت في نزل سياحي تراثي",
+        bookingStart: "الحجز مفتوح",
+        tourDate: "الجمعة القادمة الساعة 07:30 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-daraa",
+      province: "درعا",
+      title: "مدرج بصرى الشام الدولي",
+      bookingName: "برنامج جولة محافظة درعا الأثرية",
+      description: "قف على خشبة أزهى وأكمل المدرجات الرومانية المحفوظة بالكامل في العالم.",
+      price: "300,000 ل.س / للشخص",
+      image: /* daraa */ null,
+      alt: "Daraa Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-4 h-[350px] p-6",
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "رحلة مخصصة بالكامل لزيارة عاصمة حوران القديمة (بصرى الشام) والتجول داخل قلعتها الأيوبية المسورة التي تحمي بداخلها تحفة المعمار الروماني المدرج الدولي.",
+        landmarksToVisit: [
+          "مدرج بصرى الروماني الشهير وقلعته", 
+          "الجامع العمري التاريخي في بصرى", 
+          "السرير النبطي وباب الهوى الأثري", 
+          "الحمامات الرومانية القديمة والسوق الأثري"
+        ],
+        duration: "يوم واحد كامل (بدون مبيت)",
+        hotelStay: "لا تتضمن حجز فندقي",
+        bookingStart: "متاح الآن",
+        tourDate: "السبت القادم الساعة 07:00 صباحاً"
+      }
+    },
+    {
+      id: "all-tour-hasakah",
+      province: "الحسكة والقنيطرة",
+      title: "تلال الجزيرة السورية وتاريخ الجولان",
+      bookingName: "برنامج جولة الحواضر والمدن المنسية",
+      description: "رحلة فريدة تربط عراقة تلال الجزيرة السورية بملامح التاريخ في الجولان وقنيطرة المجد.",
+      price: "420,000 ل.س / للشخص",
+      image: /* hasakah */ null,
+      alt: "Hasakah and Quneitra Tour",
+      featured: false,
+      gridClass: "col-span-12 md:col-span-4 h-[350px] p-6",
+      titleClass: "font-headline-sm text-headline-sm font-bold mb-1",
+      details: {
+        fullDescription: "جولة توثيقية مميزة صُممت لتغطية تلال الحضارات الأولى بالجزيرة السورية وتاريخ عواصم جنوب غرب سوريا وحصونها التاريخية المشرفة.",
+        landmarksToVisit: [
+          "تل حلف الأثري التاريخي برأس العين", 
+          "تل براك الأثري (مملكة ناغار القديمة)", 
+          "مدينة القنيطرة المحررة ومعالمها التاريخية", 
+          "بقايا الكنائس والمساجد الأثرية بالجولان"
+        ],
+        duration: "3 أيام - ليلتان",
+        hotelStay: "تتضمن إقامة فندقية مريحة ومؤمنة بالكامل للقروب السياحي",
+        bookingStart: "يتطلب حجز مسبق قبل أسبوع",
+        tourDate: "الخميس بعد القادم الساعة 05:30 صباحاً"
+      }
     }
   ]
 };

@@ -29,6 +29,7 @@ function Destinations() {
           </div>
 
           {/* شبكة العرض (Grid) */}
+          <Link to="/damas">
           <div className="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px]">
             {featuredDestinations.map((dest) => (
               <div
@@ -54,6 +55,7 @@ function Destinations() {
               </div>
             ))}
           </div>
+          </Link>
         </div>
       </section>
     </>

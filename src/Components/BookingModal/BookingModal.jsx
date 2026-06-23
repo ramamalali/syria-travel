@@ -6,6 +6,11 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
   const [touristsCount, setTouristsCount] = useState(1);
   const [selectedSeats, setSelectedSeats] = useState([1]);
   const [landmark, setLandmark] = useState(""); // لتخزين اسم الوجهة المحددة للرحلة
+  
+  // حقول بيانات المستخدم الجديدة
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  
   const scrollContainerRef = useRef(null);
 
   const seatPrice = 150000; // السعر المتوافق مع الكروت المحدثة
@@ -13,7 +18,7 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
   const labels = {
     1: "الخطوة 1: تحديد وجهتك والسياح",
     2: "الخطوة 2: اختيار البرنامج والمقاعد الديناميكية",
-    3: "الخطوة 3: ملخص الحجز والخيارات المقيدة",
+    3: "الخطوة 3: ملخص الحجز والبيانات الشخصية والدفع",
   };
 
   // تحديث الحقل والخطوات عند فتح المودال بالاعتماد على الكرت المختار
@@ -23,6 +28,8 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
       setCurrentStep(1);
       setTouristsCount(1);
       setSelectedSeats([1]);
+      setFullName("");      // إعادة تعيين الاسم عند الفتح الجديد
+      setPhoneNumber("");   // إعادة تعيين الرقم عند الفتح الجديد
     }
   }, [isModalOpen, destination]);
 
@@ -50,8 +57,16 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
     setSelectedSeats(seats);
   };
 
-  const confirmBooking = () => {
-    alert(`تم تأكيد حجزك لـ (${landmark}) بنجاح!\nيرجى زيارة المكتب لتثبيت المقاعد.`);
+  const confirmBooking = (e) => {
+    e.preventDefault(); // منع تفعيل الفورم التقليدي
+    
+    // التحقق من إدخال البيانات قبل الدفع
+    if (!fullName.trim() || !phoneNumber.trim()) {
+      alert("يرجى ملء الاسم الكامل ورقم الهاتف أولاً لإتمام الحجز.");
+      return;
+    }
+
+    alert(`شكراً لك ${fullName}!\nتم تأكيد حجزك لـ (${landmark}) بنجاح لرقم الهاتف: ${phoneNumber}.\nيرجى زيارة المكتب لتثبيت المقاعد.`);
     handleCloseModal();
   };
 
@@ -59,13 +74,13 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      {/* الخلفية المضببة */}
+      {/* Background blur */}
       <div
         className="absolute inset-0 bg-primary/40 backdrop-blur-sm animate-fadeIn"
         onClick={handleCloseModal}
       ></div>
 
-      {/* جسم المودال */}
+      {/* Modal Body */}
       <div className="relative bg-surface-container-lowest w-full max-w-xl max-h-[90vh] overflow-hidden rounded-xl shadow-2xl flex flex-col scale-100 opacity-100 animate-scaleUp">
         <div className="h-1 bg-secondary w-full"></div>
         
@@ -141,7 +156,6 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                   <label className="font-label-md text-primary">المعلم أو الوجهة السياحية</label>
                   <div className="flex items-center gap-2 border border-outline-variant/50 rounded-xl p-3 bg-white focus-within:border-primary transition-all">
                     <span className="material-symbols-outlined text-secondary">museum</span>
-                    {/* الحقل يقرأ ويحدث القيمة المستلمة تلقائياً من الكرت */}
                     <input 
                       className="w-full border-none focus:ring-0 text-sm p-0 outline-none text-primary font-bold" 
                       placeholder="قلعة الحصن، تدمر، أفاميا..." 
@@ -176,7 +190,6 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                       <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>tour</span>
                     </div>
                     <div>
-                      {/* دمج اسم المعلم ديناميكياً برأس القائمة */}
                       <div className="font-bold text-sm text-primary">برنامج {landmark || "الوجهة المحددة"} المتكامل</div>
                       <div className="text-xs text-on-surface-variant">الانطلاق: 07:30 ص من نقطة التجمع</div>
                     </div>
@@ -231,8 +244,8 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                   className="bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-medium shadow-lg transition-all flex items-center gap-2"
                   onClick={() => goToStep(3)}
                 >
-                  <span>تأكيد البيانات</span>
-                  <span className="material-symbols-outlined">person_add</span>
+                  <span>بيانات العميل والدفع</span>
+                  <span className="material-symbols-outlined">badge</span>
                 </button>
               </div>
             </div>
@@ -240,7 +253,7 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
 
           {/* الخطوة 3 */}
           {currentStep === 3 && (
-            <div className="space-y-5 animate-fadeIn">
+            <form onSubmit={confirmBooking} className="space-y-5 animate-fadeIn">
               <div className="space-y-4">
                 <div className="bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30">
                   <h3 className="font-medium text-primary text-sm mb-2">ملخص الرحلة السياحية</h3>
@@ -252,8 +265,48 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                     <div>
                       <p className="text-on-surface-variant">المقاعد المخصصة</p>
                       <p className="font-bold text-primary text-[11px]">
-                        {selectedSeats.join(" ، ")}
+                        {selectedSeats.map(s => `مقعد ${s}`).join(" ، ")}
                       </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* إضافة حقول بيانات المستخدم (الاسم والهاتف) قبل الدفع */}
+                <div className="bg-white p-4 rounded-2xl border border-outline-variant/40 space-y-3 shadow-sm">
+                  <h3 className="font-medium text-primary text-sm flex items-center gap-1.5 mb-1">
+                    <span className="material-symbols-outlined text-secondary text-lg">assignment_ind</span>
+                    بيانات المسافر الرئيسي للتثبيت
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-on-surface-variant">الاسم الكامل</label>
+                      <div className="flex items-center gap-2 border border-outline-variant/50 rounded-xl p-3 bg-surface-container-lowest focus-within:border-primary transition-all">
+                        <span className="material-symbols-outlined text-sm text-primary">person</span>
+                        <input 
+                          required
+                          className="w-full border-none focus:ring-0 text-xs p-0 outline-none text-primary font-medium" 
+                          placeholder="أدخل اسمك الثلاثي" 
+                          type="text" 
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-on-surface-variant">رقم الهاتف</label>
+                      <div className="flex items-center gap-2 border border-outline-variant/50 rounded-xl p-3 bg-surface-container-lowest focus-within:border-primary transition-all" dir="rtl">
+                        <span className="material-symbols-outlined text-sm text-primary">phone</span>
+                        <input 
+                          required
+                          className="w-full border-none focus:ring-0 text-xs p-0 outline-none text-primary font-medium tracking-wide" 
+                          placeholder="09XX XXX XXX" 
+                          type="tel" 
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -282,16 +335,18 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                       {(seatPrice * touristsCount).toLocaleString()} ل.س
                     </span>
                   </div>
+                  {/* تغيير التاغ إلى button type="submit" لضمان عمل الـ HTML5 Validation والـ required */}
                   <button
+                    type="submit"
                     className="w-full bg-secondary text-primary font-bold py-4 rounded-xl text-md shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all"
-                    onClick={confirmBooking}
                   >
-                    تأكيد الحجز السياحي
+                    تأكيد الحجز السياحي والدفع
                   </button>
                 </div>
               </div>
               <div className="flex justify-start">
                 <button
+                  type="button"
                   className="text-primary text-sm font-medium flex items-center gap-1 hover:translate-x-1 transition-transform"
                   onClick={() => goToStep(2)}
                 >
@@ -299,7 +354,7 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                   <span>العودة لاختيار البرنامج</span>
                 </button>
               </div>
-            </div>
+            </form>
           )}
         </div>
 
