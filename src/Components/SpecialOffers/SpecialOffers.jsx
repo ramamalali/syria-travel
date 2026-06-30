@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BookingModal from '@/Components/BookingModal/BookingModal.jsx'; 
-import { initialOffers } from '@/constants'; // 1. استيراد البيانات المركزية
 
 function SpecialOffers() {
-  const [offers, setOffers] = useState(initialOffers); // جعل العروض في الحالة (State)
+  const [offers, setOffers] = useState([]); 
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState("");
+
+  // جلب عروض الخصومات ديناميكياً من الباك آيند
+  useEffect(() => {
+    fetch('http://localhost:5000/api/special-offers')
+      .then(res => res.json())
+      .then(data => {
+        setOffers(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching special offers:", err);
+        setLoading(false);
+      });
+  }, []);
 
   const handleOfferClick = (offerName) => {
     setSelectedDestination(offerName);
@@ -16,6 +30,10 @@ function SpecialOffers() {
     setIsModalOpen(false);
     setSelectedDestination("");
   };
+
+  if (loading) {
+    return <div className="text-center py-24 bg-primary text-white font-bold">جاري تحميل العروض الحصرية...</div>;
+  }
 
   return (
     <>
@@ -31,7 +49,7 @@ function SpecialOffers() {
             <div className="h-1 w-24 bg-secondary mx-auto rounded-full"></div>
           </div>
 
-          {/* 2. رندرة الكروت ديناميكياً باستخدام الخريطة map */}
+          {/* رندرة الكروت بعد جلبها بنجاح من قاعدة البيانات */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {offers.map((offer) => (
               <div key={offer.id} className="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20 text-white relative group overflow-hidden flex flex-col justify-between">
@@ -45,7 +63,7 @@ function SpecialOffers() {
                 
                 <div>
                   <div className="text-3xl font-bold mb-8">
-                    {offer.price.toLocaleString()} <span className="text-sm font-normal">ل.س</span>
+                    {Number(offer.price).toLocaleString()} <span className="text-sm font-normal">ل.س</span>
                   </div>
                   <button 
                     onClick={() => handleOfferClick(offer.bookingName)}

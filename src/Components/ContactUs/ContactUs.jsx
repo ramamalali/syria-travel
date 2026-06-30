@@ -1,10 +1,19 @@
-import { useState } from "react";
-// استيراد البيانات المركزية للقسم
-import { contactData } from "@/constants"; 
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function ContactUs() {
   // حالة التحكم في ظهور البوب أب
   const [showPopup, setShowPopup] = useState(false);
+
+  // حالة لتخزين معلومات التواصل المجلوبة من قاعدة البيانات
+  const [contactInfo, setContactInfo] = useState({
+    title: "تواصل معنا",
+    description: "نحن هنا للإجابة على استفساراتكم وتلقي ملاحظاتكم على مدار الساعة.",
+    address: "دمشق، شارع البرامكة، بناء شركة سوا، سوريا.",
+    email: "info@sawa-travel.sy",
+    mapImgUrl: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800",
+    phones: []
+  });
 
   // حالة التحكم في حقول الفورم لتصفيرها بعد الإرسال
   const [formData, setFormData] = useState({
@@ -15,27 +24,56 @@ function ContactUs() {
     message: ""
   });
 
+  // 1. جلب بيانات التواصل من قاعدة البيانات عند تحميل السيكشن
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/contact-info");
+        if (response.data) {
+          setContactInfo({
+            title: response.data.settings.title,
+            description: response.data.settings.description,
+            address: response.data.settings.address,
+            email: response.data.settings.email,
+            mapImgUrl: response.data.settings.map_img_url,
+            phones: response.data.phones.map(p => p.phone_number)
+          });
+        }
+      } catch (error) {
+        console.error("خطأ أثناء جلب بيانات التواصل:", error);
+      }
+    };
+    fetchContactData();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // 2. إرسال بيانات الفورم الحية إلى الباك آيند وحفظها في الداتابيز
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // هنا يتم معالجة إرسال البيانات (API) مستقبلاً
-    console.log("بيانات المراسلة المستلمة:", formData);
+    try {
+      const response = await axios.post("http://localhost:5000/api/contact", formData);
+      
+      if (response.data.success) {
+        setShowPopup(true); // إظهار بوب أب النجاح المخصص
 
-    setShowPopup(true); // إظهار بوب أب النجاح
-
-    // تصفير الفورم تلقائياً
-    setFormData({
-      fullName: "",
-      phone: "",
-      email: "",
-      inquiryType: "استفسار عن حجز",
-      message: ""
-    });
+        // تصفير الفورم تلقائياً
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          inquiryType: "استفسار عن حجز",
+          message: ""
+        });
+      }
+    } catch (error) {
+      console.error("حدث خطأ أثناء إرسال الرسالة إلى السيرفر:", error);
+      alert("عذراً، فشل إرسال الرسالة. يرجى التحقق من اتصالك بالسيرفر.");
+    }
   };
 
   return (
@@ -44,13 +82,13 @@ function ContactUs() {
         <div className="px-margin-desktop max-w-container-max mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             
-            {/* قسم معلومات التواصل - يقرأ الآن من ملف الداتا المركزي */}
+            {/* قسم معلومات التواصل ديناميكي */}
             <div>
               <h2 className="font-headline-lg text-headline-lg text-primary mb-6">
-                {contactData.title}
+                {contactInfo.title}
               </h2>
               <p className="text-on-surface-variant mb-10 font-body-md text-body-md">
-                {contactData.description}
+                {contactInfo.description}
               </p>
               
               <div className="space-y-6">
@@ -59,16 +97,16 @@ function ContactUs() {
                   <span className="material-symbols-outlined text-primary text-2xl">location_on</span>
                   <div>
                     <h6 className="font-bold">المكتب الرئيسي</h6>
-                    <p className="text-on-surface-variant">{contactData.address}</p>
+                    <p className="text-on-surface-variant">{contactInfo.address}</p>
                   </div>
                 </div>
                 
-                {/* الأرقام المجلوبة ديناميكياً باستخدام map من ملف الثوابت */}
+                {/* الأرقام المجلوبة ديناميكياً باستخدام map */}
                 <div className="flex items-start gap-4">
                   <span className="material-symbols-outlined text-primary text-2xl">phone_in_talk</span>
                   <div>
                     <h6 className="font-bold">خدمة العملاء</h6>
-                    {contactData.phones.map((phone, index) => (
+                    {contactInfo.phones.map((phone, index) => (
                       <p key={index} className="text-on-surface-variant" dir="ltr">{phone}</p>
                     ))}
                   </div>
@@ -79,17 +117,17 @@ function ContactUs() {
                   <span className="material-symbols-outlined text-primary text-2xl">mail</span>
                   <div>
                     <h6 className="font-bold">البريد الإلكتروني</h6>
-                    <p className="text-on-surface-variant">{contactData.email}</p>
+                    <p className="text-on-surface-variant">{contactInfo.email}</p>
                   </div>
                 </div>
               </div>
 
-              {/* صورة الخريطة من ملف الثوابت */}
+              {/* صورة الخريطة */}
               <div className="mt-10 rounded-2xl overflow-hidden h-64 border-2 border-white shadow-lg">
                 <img 
                   alt="Map Location" 
                   className="w-full h-full object-cover" 
-                  src={contactData.mapImgUrl}
+                  src={contactInfo.mapImgUrl}
                 />
               </div>
             </div>
@@ -147,7 +185,7 @@ function ContactUs() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-lg shadow-lg hover:bg-primary-container active:scale-95 transition-all">
+                <button type="submit" className=" curser-pointer w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-lg shadow-lg hover:bg-primary-container active:scale-95 transition-all">
                   إرسال الرسالة
                 </button>
               </form>

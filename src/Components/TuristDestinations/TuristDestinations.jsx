@@ -1,12 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router";
 import BookingModal from '@/Components/BookingModal/BookingModal.jsx';
-import { toursSectionData } from "@/constants";
+import API from "@/Services/api"; // استيراد الـ API الخاص بمشروعكِ
 
 function TuristDestinations() {
+  const [toursData, setToursData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [selectedTour, setSelectedTour] = useState(null);
+
+  // جلب البيانات من الباك آيند عند تحميل المكوّن
+  useEffect(() => {
+    API.get('/featured-tours')
+      .then((res) => {
+        if (res.data) setToursData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("خطأ في جلب جولات المحافظات السیاحیة:", err);
+        setLoading(false);
+      });
+  }, []);
 
   // فتح مودال تفاصيل المحافظة والمعالم عند الضغط على الكرت
   const handleCardClick = (tour) => {
@@ -30,8 +45,14 @@ function TuristDestinations() {
     setSelectedTour(null);
   };
 
-  // تصفية الجولات المميزة للرئيسية
-  const featuredTours = toursSectionData.items.filter(item => item.featured);
+  if (loading) {
+    return <div className="text-center py-20 text-primary animate-pulse font-body-lg">جاري تحميل الرحلات السياحية...</div>;
+  }
+
+  if (!toursData || !toursData.items) return null;
+
+  // تصفية الجولات المميزة للرئيسية من البيانات القادمة من السيرفر
+  const featuredTours = toursData.items.filter(item => item.featured);
 
   return (
     <>
@@ -39,15 +60,15 @@ function TuristDestinations() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div className="max-w-xl">
             <h2 className="font-headline-lg text-headline-lg text-primary mb-4 leading-tight">
-              {toursSectionData.title}
+              {toursData.title}
             </h2>
-            <p className="text-on-surface-variant">{toursSectionData.description}</p>
+            <p className="text-on-surface-variant">{toursData.description}</p>
           </div>
           <Link 
             to="/all-turistDestinations" 
             className="text-secondary font-label-md text-label-md flex items-center gap-1 hover:opacity-80 transition-opacity"
           >
-            <span>{toursSectionData.viewAllText}</span>
+            <span>{toursData.viewAllText || "عرض الكل"}</span>
             <span className="material-symbols-outlined">arrow_left</span>
           </Link>
         </div>
@@ -100,42 +121,44 @@ function TuristDestinations() {
                   <span className="material-symbols-outlined text-md">explore</span>
                   مخطط مسار الجولة بالمحافظة
                 </h4>
-                <p className="text-xs text-on-surface-variant leading-relaxed">{selectedTour.details.fullDescription}</p>
+                <p className="text-xs text-on-surface-variant leading-relaxed">{selectedTour.details?.fullDescription}</p>
               </div>
 
-              <div className="border-t border-outline-variant/20 pt-4">
-                <h4 className="text-sm font-bold text-primary mb-2.5 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-md">account_balance</span>
-                  المعالم والمناطق الأثرية المشمولة بالزيارة
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {selectedTour.details.landmarksToVisit.map((landmark, idx) => (
-                    <div key={idx} className="flex items-center gap-2 bg-surface-container-low p-2 rounded-xl border border-outline-variant/10">
-                      <span className="text-secondary font-bold text-xs bg-white w-5 h-5 rounded-full flex items-center justify-center border border-outline-variant/30 shadow-sm">{idx + 1}</span>
-                      <span className="text-xs text-primary font-medium">{landmark}</span>
-                    </div>
-                  ))}
+              {selectedTour.details?.landmarksToVisit && (
+                <div className="border-t border-outline-variant/20 pt-4">
+                  <h4 className="text-sm font-bold text-primary mb-2.5 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-md">account_balance</span>
+                    المعالم والمناطق الأثرية المشمولة بالزيارة
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {selectedTour.details.landmarksToVisit.map((landmark, idx) => (
+                      <div key={idx} className="flex items-center gap-2 bg-surface-container-low p-2 rounded-xl border border-outline-variant/10">
+                        <span className="text-secondary font-bold text-xs bg-white w-5 h-5 rounded-full flex items-center justify-center border border-outline-variant/30 shadow-sm">{idx + 1}</span>
+                        <span className="text-xs text-primary font-medium">{landmark}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="grid grid-cols-2 gap-3 border-t border-outline-variant/20 pt-4 text-xs">
                 <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
                   <span className="text-on-surface-variant block mb-1 font-medium">🗓️ مدة الإقامة والجولة</span>
-                  <span className="font-bold text-primary">{selectedTour.details.duration}</span>
+                  <span className="font-bold text-primary">{selectedTour.details?.duration}</span>
                 </div>
                 <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
                   <span className="text-on-surface-variant block mb-1 font-medium">🏨 الحجز الفندقي والتثبيت</span>
-                  <span className={`font-bold ${selectedTour.details.hotelStay.includes('لا تتضمن') ? 'text-amber-800' : 'text-green-700'}`}>
-                    {selectedTour.details.hotelStay}
+                  <span className={`font-bold ${selectedTour.details?.hotelStay?.includes('لا تتضمن') ? 'text-amber-800' : 'text-green-700'}`}>
+                    {selectedTour.details?.hotelStay}
                   </span>
                 </div>
                 <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
                   <span className="text-on-surface-variant block mb-1 font-medium">⏳ فترة فتح باب الحجز</span>
-                  <span className="font-bold text-primary">{selectedTour.details.bookingStart}</span>
+                  <span className="font-bold text-primary">{selectedTour.details?.bookingStart}</span>
                 </div>
                 <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
                   <span className="text-on-surface-variant block mb-1 font-medium">🚀 موعد انطلاق الحافلة</span>
-                  <span className="font-bold text-secondary">{selectedTour.details.tourDate}</span>
+                  <span className="font-bold text-secondary">{selectedTour.details?.tourDate}</span>
                 </div>
               </div>
 

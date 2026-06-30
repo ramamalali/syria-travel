@@ -1,8 +1,30 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import { destinationsSectionData } from "@/constants"; // استيراد نفس البيانات المركزية
 
 function AllDestinations() {
+  const [sectionData, setSectionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // جلب كافة الكنوز والوجهات من قاعدة البيانات حياً
+  useEffect(() => {
+    const fetchAllDestinations = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/destinations-section");
+        setSectionData(response.data);
+      } catch (error) {
+        console.error("خطأ أثناء جلب كافة الوجهات:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAllDestinations();
+  }, []);
+
+  if (loading || !sectionData) return null; // يمكنك وضع سبيانر بسيط هنا إن أردتِ
+
   return (
     <>
       <Navbar />
@@ -12,36 +34,29 @@ function AllDestinations() {
           {/* رأس الصفحة */}
           <div className="mb-12 border-b border-outline-variant/20 pb-6">
             <h2 className="font-headline-lg text-headline-lg text-primary mb-2">
-              {destinationsSectionData.title}
+              {sectionData.title}
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              {destinationsSectionData.description}
+              {sectionData.description}
             </p>
           </div>
 
           {/* شبكة عرض ديناميكية متجاوبة لكل الكنوز بدون تكرار يدوي للـ Grids */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-[350px]">
-            {destinationsSectionData.items.map((dest) => (
-              <div 
-                key={dest.id} 
-                className="relative group overflow-hidden rounded-xl cursor-pointer shadow-md"
-              >
-                <img
-                  alt={dest.alt}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  src={dest.image}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 p-6 text-white w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="font-headline-sm text-headline-sm font-bold mb-1">
-                    {dest.title}
-                  </h3>
-                  <p className="font-label-sm text-label-sm opacity-0 group-hover:opacity-90 transition-opacity duration-300 line-clamp-2">
-                    {dest.description || "استكشف أبعاد العراقة في هذه الوجهة التاريخية الساحرة."}
-                  </p>
-                </div>
-              </div>
-            ))}
+      
+{sectionData.items.map((dest) => (
+  <Link to={`/province/${dest.id}`} key={dest.id} className={`${dest.gridClass || ""} block`}>
+    <div className="relative group overflow-hidden rounded-xl cursor-pointer h-full w-full">
+      {/* محتوى الكرت كما هو تماماً بدون تغيير بالستايل */}
+      <img src={dest.image} alt={dest.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+      <div className={`absolute bottom-0 ${dest.paddingClass || "p-6"} text-white w-full`}>
+        <h3 className={dest.titleClass || "font-headline-sm text-headline-sm"}>{dest.title}</h3>
+        {dest.description && <p className="font-body-md text-body-md opacity-80 mt-1">{dest.description}</p>}
+      </div>
+    </div>
+  </Link>
+))}
           </div>
         </div>
       </section>

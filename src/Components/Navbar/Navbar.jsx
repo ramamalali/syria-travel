@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { navbarData } from "@/constants"; // استيراد بيانات الناف بار الديناميكية
+import { useState, useEffect } from "react";
+import API from "@/Services/api"; // استيراد إعداد Axios المخصص للباك إيند
 
 function Navbar() {
   // --- إدارات الحالة (States) ---
@@ -7,6 +7,11 @@ function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   
+  // الحالات الديناميكية القادمة من قاعدة البيانات
+  const [logo, setLogo] = useState("سوا ترافيل");
+  const [navLinks, setNavLinks] = useState([]);
+  const [adminHint, setAdminHint] = useState("تلميح للأدمن: admin@orbit.com وباسوورد: admin123");
+
   // بيانات المستخدم الحالي (لمحاكاة تسجيل الدخول والأدمن)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -15,6 +20,23 @@ function Navbar() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+
+  // --- جلب البيانات الديناميكية من الباك إيند عند تحميل المكون ---
+  useEffect(() => {
+    API.get("/navbar")
+      .then((res) => {
+        if (res.data.settings) {
+          setLogo(res.data.settings.logo);
+          setAdminHint(res.data.settings.admin_hint);
+        }
+        if (res.data.links) {
+          setNavLinks(res.data.links);
+        }
+      })
+      .catch((err) => {
+        console.error("خطأ أثناء جلب بيانات النافبار من السيرفر:", err);
+      });
+  }, []);
 
   // معالجة تسجيل الدخول المحاكي
   const handleLoginSubmit = (e) => {
@@ -46,7 +68,7 @@ function Navbar() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setIsAdmin(false);
+    isAdmin(false);
     setActiveTab("الرئيسية");
     alert("تم تسجيل الخروج.");
   };
@@ -56,16 +78,16 @@ function Navbar() {
       <nav className="bg-surface sticky top-0 z-50 w-full h-16 shadow-sm border-b border-outline-variant bg-white">
         <div className="flex justify-between items-center px-margin-desktop max-w-container-max mx-auto h-full px-4">
           
-          {/* قسم الشعار والروابط المجلوبة من ملف الداتا */}
+          {/* قسم الشعار والروابط المجلوبة من الرابط السحابي */}
           <div className="flex items-center gap-8">
             <span className="font-headline-sm text-headline-sm font-bold text-primary text-2xl">
-              {navbarData.logo}
+              {logo}
             </span>
             
             <div className="hidden md:flex gap-6 relative h-full items-center">
-              {navbarData.navLinks.map((link) => (
+              {navLinks.map((link) => (
                 <a
-                  key={link.name}
+                  key={link.id || link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
                   className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 ${
@@ -152,7 +174,7 @@ function Navbar() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
                 />
-                <p className="text-[10px] text-gray-400 mt-1">{navbarData.adminHint}</p>
+                <p className="text-[10px] text-gray-400 mt-1">{adminHint}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>

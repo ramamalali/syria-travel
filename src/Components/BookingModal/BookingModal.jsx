@@ -9,7 +9,8 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
   
   // حقول بيانات المستخدم الجديدة
   const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+const [countryCode, setCountryCode] = useState('+963'); // القيمة الافتراضية لسوريا
+const [phoneNumber, setPhoneNumber] = useState('');
   
   const scrollContainerRef = useRef(null);
 
@@ -121,7 +122,7 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
               </div>
 
               <div className="space-y-2">
-                <label className="font-label-md text-primary block">عدد السواح</label>
+                <label className="font-label-md text-primary block">عدد السياح</label>
                 <div className="flex items-center border border-outline-variant/50 rounded-xl p-2 h-12 bg-white">
                   <button
                     onClick={() => setTouristsCount(Math.max(1, touristsCount - 1))}
@@ -294,20 +295,45 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                       </div>
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-on-surface-variant">رقم الهاتف</label>
-                      <div className="flex items-center gap-2 border border-outline-variant/50 rounded-xl p-3 bg-surface-container-lowest focus-within:border-primary transition-all" dir="rtl">
-                        <span className="material-symbols-outlined text-sm text-primary">phone</span>
-                        <input 
-                          required
-                          className="w-full border-none focus:ring-0 text-xs p-0 outline-none text-primary font-medium tracking-wide" 
-                          placeholder="09XX XXX XXX" 
-                          type="tel" 
-                          value={phoneNumber}
-                          onChange={(e) => setPhoneNumber(e.target.value)}
-                        />
-                      </div>
-                    </div>
+                 <div className="space-y-1">
+  <label className="text-xs font-bold text-on-surface-variant">رقم الهاتف</label>
+  <div className="flex items-center gap-2 border border-outline-variant/50 rounded-xl p-3 bg-surface-container-lowest focus-within:border-primary transition-all" dir="ltr">
+    
+    {/* أيقونة الهاتف الثابتة في اليسار لأن الاتجاه ltr لأجل الأرقام */}
+    <span className="material-symbols-outlined text-sm text-primary pl-1">phone</span>
+
+    {/* قائمة اختيار نداء الدولة */}
+    <select 
+      value={countryCode} 
+      onChange={(e) => setCountryCode(e.target.value)}
+      className="bg-transparent border-none text-xs font-bold text-primary p-0 pr-1 outline-none focus:ring-0 cursor-pointer border-r border-outline-variant/30"
+    >
+      <option value="+963">🇸🇾 +963</option>
+      <option value="+966">🇸🇦 +966</option>
+      <option value="+974">🇶🇦 +974</option>
+      <option value="+971">🇦🇪 +971</option>
+      <option value="+39">🇮🇹 +39</option>
+    </select>
+
+    {/* حقل إدخال الرقم */}
+    <input 
+      required
+      className="w-full border-none focus:ring-0 text-xs p-0 outline-none text-primary font-medium tracking-wide" 
+      placeholder="9XXXXXXXX" 
+      type="tel" 
+      value={phoneNumber}
+      onChange={(e) => {
+        // 1. السماح بالأرقام فقط ومنع الحروف أو الرموز
+        const value = e.target.value.replace(/\D/g, '');
+        
+        // 2. شرط عدم تجاوز 10 أرقام
+        if (value.length <= 10) {
+          setPhoneNumber(value);
+        }
+      }}
+    />
+  </div>
+</div>
                   </div>
                 </div>
                 
