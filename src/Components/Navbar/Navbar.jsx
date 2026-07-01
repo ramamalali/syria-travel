@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import API from "@/Services/api"; // استيراد إعداد Axios المخصص للباك إيند
+import { Link } from "react-router-dom"; // استيراد Link للتنقل البرمجي السلس
+import API from "@/Services/api"; 
 
 function Navbar() {
   // --- إدارات الحالة (States) ---
@@ -12,9 +13,9 @@ function Navbar() {
   const [navLinks, setNavLinks] = useState([]);
   const [adminHint, setAdminHint] = useState("تلميح للأدمن: admin@orbit.com وباسوورد: admin123");
 
-  // بيانات المستخدم الحالي (لمحاكاة تسجيل الدخول والأدمن)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  // قراءة حالة تسجيل الدخول من الـ LocalStorage مباشرة حتى لا تضيع عند عمل Refresh للموقع
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
 
   // حقول الإدخال
   const [email, setEmail] = useState("");
@@ -43,13 +44,17 @@ function Navbar() {
     e.preventDefault();
     if (email === "admin@orbit.com" && password === "admin123") {
       setIsAdmin(true);
+      localStorage.setItem("isAdmin", "true"); // حفظ حالة الأدمن محلياً
       alert("تم تسجيل الدخول كمسؤول (Admin) بنجاح!");
     } else {
       setIsAdmin(false);
+      localStorage.setItem("isAdmin", "false");
       alert(`مرحباً بك! تم تسجيل الدخول بالحساب: ${email}`);
     }
     setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true"); // حفظ حالة تسجيل الدخول محلياً
     setIsLoginOpen(false);
+    
     // تفريغ الحقول
     setEmail("");
     setPassword("");
@@ -60,7 +65,6 @@ function Navbar() {
     e.preventDefault();
     alert(`أهلاً بك يا ${name}! تم إنشاء حسابك بنجاح.`);
     setIsRegisterOpen(false);
-    // تفريغ الحقول
     setName("");
     setEmail("");
     setPassword("");
@@ -68,7 +72,9 @@ function Navbar() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    isAdmin(false);
+    setIsAdmin(false); // تعديل وإصلاح الخطأ المطبعي هنا من isAdmin لـ setIsAdmin
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isAdmin");
     setActiveTab("الرئيسية");
     alert("تم تسجيل الخروج.");
   };
@@ -78,7 +84,7 @@ function Navbar() {
       <nav className="bg-surface sticky top-0 z-50 w-full h-16 shadow-sm border-b border-outline-variant bg-white">
         <div className="flex justify-between items-center px-margin-desktop max-w-container-max mx-auto h-full px-4">
           
-          {/* قسم الشعار والروابط المجلوبة من الرابط السحابي */}
+          {/* قسم الشعار والروابط */}
           <div className="flex items-center gap-8">
             <span className="font-headline-sm text-headline-sm font-bold text-primary text-2xl">
               {logo}
@@ -102,8 +108,8 @@ function Navbar() {
 
               {/* تظهر لوحة التحكم فقط إذا كان المستخدم مسجلاً كأدمن */}
               {isAdmin && (
-                <a
-                  href="#admin-dashboard"
+                <Link
+                  to="/admin/dashboard" // استخدام Link للتوجيه لصفحة مسار الداشبورد المستقل
                   onClick={() => setActiveTab("لوحة التحكم")}
                   className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 text-secondary ${
                     activeTab === "لوحة التحكم"
@@ -112,7 +118,7 @@ function Navbar() {
                   }`}
                 >
                   لوحة التحكم
-                </a>
+                </Link>
               )}
             </div>
           </div>
