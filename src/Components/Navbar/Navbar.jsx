@@ -1,30 +1,48 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // استيراد Link للتنقل البرمجي السلس
+import { Link } from "react-router-dom"; 
 import API from "@/Services/api"; 
 
 function Navbar() {
-  // --- إدارات الحالة (States) ---
-  const [activeTab, setActiveTab] = useState("الرئيسية");
+  // --- إدارة حالة اللغة ---
+  const [lang, setLang] = useState(() => localStorage.getItem("site_lang") || "ar");
+ const [currentLang, setCurrentLang] = useState(() => localStorage.getItem("site_lang") || "ar");
+  // الاستماع لحدث تغيير اللغة الفوري المُنطلق من النافبار
+  // الاستماع لحدث تغيير اللغة الفوري المُنطلق من النافبار
+  useEffect(() => {
+    const handleLangUpdate = () => {
+      setCurrentLang(localStorage.getItem("site_lang") || "ar");
+    };
+
+    window.addEventListener("languageChange", handleLangUpdate);
+    return () => window.removeEventListener("languageChange", handleLangUpdate);
+  }, []);
+
+  // --- إدارات الحالة الثابتة للمكون ---
+  const [activeTab, setActiveTab] = useState("#");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   
-  // الحالات الديناميكية القادمة من قاعدة البيانات
   const [logo, setLogo] = useState("سوا ترافيل");
   const [navLinks, setNavLinks] = useState([]);
   const [adminHint, setAdminHint] = useState("تلميح للأدمن: admin@orbit.com وباسوورد: admin123");
 
-  // قراءة حالة تسجيل الدخول من الـ LocalStorage مباشرة حتى لا تضيع عند عمل Refresh للموقع
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
   const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
 
-  // حقول الإدخال
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
-  // --- جلب البيانات الديناميكية من الباك إيند عند تحميل المكون ---
+  // --- مراقبة اللغة وتحديث اتجاه المتصفح ---
   useEffect(() => {
-    API.get("/navbar")
+    localStorage.setItem("site_lang", lang);
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  // --- جلب البيانات الديناميكية من الباك إيند ---
+  useEffect(() => {
+    API.get(`https://syria-travel.onrender.com/api/navbar?lang=${lang}`)
       .then((res) => {
         if (res.data.settings) {
           setLogo(res.data.settings.logo);
@@ -35,27 +53,25 @@ function Navbar() {
         }
       })
       .catch((err) => {
-        console.error("خطأ أثناء جلب بيانات النافبار من السيرفر:", err);
+        console.error("خطأ أثناء جلب بيانات النافبار المبسطة:", err);
       });
-  }, []);
+  }, [lang]); 
 
   // معالجة تسجيل الدخول المحاكي
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     if (email === "admin@orbit.com" && password === "admin123") {
       setIsAdmin(true);
-      localStorage.setItem("isAdmin", "true"); // حفظ حالة الأدمن محلياً
-      alert("تم تسجيل الدخول كمسؤول (Admin) بنجاح!");
+      localStorage.setItem("isAdmin", "true"); 
+      alert(lang === "ar" ? "تم تسجيل الدخول كمسؤول بنجاح!" : "Logged in as Admin successfully!");
     } else {
       setIsAdmin(false);
       localStorage.setItem("isAdmin", "false");
-      alert(`مرحباً بك! تم تسجيل الدخول بالحساب: ${email}`);
+      alert(lang === "ar" ? `مرحباً بك! تم تسجيل الدخول بالحساب: ${email}` : `Welcome! Logged in with: ${email}`);
     }
     setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "true"); // حفظ حالة تسجيل الدخول محلياً
+    localStorage.setItem("isLoggedIn", "true"); 
     setIsLoginOpen(false);
-    
-    // تفريغ الحقول
     setEmail("");
     setPassword("");
   };
@@ -63,7 +79,7 @@ function Navbar() {
   // معالجة الاشتراك المحاكي
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    alert(`أهلاً بك يا ${name}! تم إنشاء حسابك بنجاح.`);
+    alert(lang === "ar" ? `أهلاً بك يا ${name}! تم إنشاء حسابك بنجاح.` : `Welcome ${name}! Your account has been created.`);
     setIsRegisterOpen(false);
     setName("");
     setEmail("");
@@ -72,32 +88,48 @@ function Navbar() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setIsAdmin(false); // تعديل وإصلاح الخطأ المطبعي هنا من isAdmin لـ setIsAdmin
+    setIsAdmin(false); 
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("isAdmin");
-    setActiveTab("الرئيسية");
-    alert("تم تسجيل الخروج.");
+    setActiveTab("#");
+    alert(lang === "ar" ? "تم تسجيل الخروج." : "Logged out successfully.");
+  };
+
+  // 🔥 دالة تبديل اللغة المعدلة لإطلاق الحدث المخصص فوراً
+  const toggleLanguage = () => {
+    const nextLang = lang === "ar" ? "en" : "ar";
+    
+    // 1. تحديث الحالة الداخلية للنافبار لتغيير واجهته هو أولاً
+    setLang(nextLang);
+    
+    // 2. تحديث التخزين والـ DOM لضمان جاهزية البيانات
+    localStorage.setItem("site_lang", nextLang);
+    document.documentElement.dir = nextLang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = nextLang;
+
+    // 3. بث الحدث المخصص لتقوم الصفحة الرئيسية وقسم الهيرو بالتحديث الفوري
+    window.dispatchEvent(new Event("languageChange"));
   };
 
   return (
     <>
-      <nav className="bg-surface sticky top-0 z-50 w-full h-16 shadow-sm border-b border-outline-variant bg-white">
-        <div className="flex justify-between items-center px-margin-desktop max-w-container-max mx-auto h-full px-4">
+      <nav className="bg-surface sticky top-0 z-50 w-full h-16 shadow-sm border-b border-outline-variant bg-white" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
+        <div className="flex justify-between items-center max-w-7xl mx-auto h-full px-6">
           
           {/* قسم الشعار والروابط */}
           <div className="flex items-center gap-8">
-            <span className="font-headline-sm text-headline-sm font-bold text-primary text-2xl">
+            <span className="font-bold text-primary text-xl md:text-2xl tracking-tight">
               {logo}
             </span>
             
-            <div className="hidden md:flex gap-6 relative h-full items-center">
+            <div className="hidden md:flex gap-6 h-full items-center">
               {navLinks.map((link) => (
                 <a
-                  key={link.id || link.name}
+                  key={link.id}
                   href={link.href}
-                  onClick={() => setActiveTab(link.name)}
-                  className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 ${
-                    activeTab === link.name
+                  onClick={() => setActiveTab(link.href)}
+                  className={`pb-1 text-xs md:text-sm cursor-pointer transition-all border-b-2 ${
+                    activeTab === link.href
                       ? "text-primary border-primary font-bold"
                       : "text-on-surface-variant border-transparent hover:text-primary"
                   }`}
@@ -106,46 +138,55 @@ function Navbar() {
                 </a>
               ))}
 
-              {/* تظهر لوحة التحكم فقط إذا كان المستخدم مسجلاً كأدمن */}
               {isAdmin && (
                 <Link
-                  to="/admin/dashboard" // استخدام Link للتوجيه لصفحة مسار الداشبورد المستقل
-                  onClick={() => setActiveTab("لوحة التحكم")}
-                  className={`pb-1 font-body-md text-body-md cursor-pointer transition-all border-b-2 text-secondary ${
-                    activeTab === "لوحة التحكم"
+                  to="/admin/dashboard" 
+                  onClick={() => setActiveTab("dashboard")}
+                  className={`pb-1 text-xs md:text-sm cursor-pointer transition-all border-b-2 text-secondary ${
+                    activeTab === "dashboard"
                       ? "border-secondary font-bold"
                       : "border-transparent hover:text-secondary"
                   }`}
                 >
-                  لوحة التحكم
+                  {lang === "ar" ? "لوحة التحكم" : "Dashboard"}
                 </Link>
               )}
             </div>
           </div>
 
-          {/* أزرار التحكم والولوج */}
+          {/* أزرار التحكم والولوج + زر تبديل اللغة */}
           <div className="flex items-center gap-4">
+            
+            {/* 🌐 زر تبديل اللغة الذكي الحركي */}
+            <button
+              onClick={toggleLanguage}
+              className="px-3 py-1 border border-outline-variant rounded-xl text-[11px] font-bold bg-surface-container-lowest hover:bg-surface-container transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <span className="material-symbols-outlined text-xs">language</span>
+              {lang === "ar" ? "English" : "العربية"}
+            </button>
+
             {!isLoggedIn ? (
               <>
                 <button
                   onClick={() => setIsLoginOpen(true)}
-                  className="hidden md:block text-primary font-label-md text-label-md cursor-pointer active:scale-95 transition-all hover:opacity-80"
+                  className="hidden md:block text-primary text-xs font-bold cursor-pointer active:scale-95 transition-all hover:opacity-80"
                 >
-                  تسجيل الدخول
+                  {lang === "ar" ? "تسجيل الدخول" : "Login"}
                 </button>
                 <button
                   onClick={() => setIsRegisterOpen(true)}
-                  className="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md cursor-pointer active:scale-95 transition-all"
+                  className="bg-primary text-on-primary px-5 py-2 rounded-xl text-xs font-bold cursor-pointer active:scale-95 transition-all"
                 >
-                  اشتراك
+                  {lang === "ar" ? "اشتراك" : "Register"}
                 </button>
               </>
             ) : (
               <button
                 onClick={handleLogout}
-                className="border border-red-500 text-red-500 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-50 transition-all active:scale-95"
+                className="border border-red-500 text-red-500 px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-red-50 transition-all active:scale-95"
               >
-                تسجيل الخروج
+                {lang === "ar" ? "تسجيل الخروج" : "Logout"}
               </button>
             )}
           </div>
@@ -155,49 +196,32 @@ function Navbar() {
       {/* ================= بوب اب تسجيل الدخول ================= */}
       {isLoginOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setIsLoginOpen(false)}
-          ></div>
-          <div className="relative bg-white w-full max-w-md p-6 rounded-xl shadow-2xl z-10 animate-scaleUp">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsLoginOpen(false)}></div>
+          <div className="relative bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl z-10">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-gray-900">تسجيل الدخول</h3>
-              <button
-                onClick={() => setIsLoginOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1"
-              >
-                ✕
-              </button>
+              <h3 className="text-sm font-bold text-gray-900">{lang === "ar" ? "تسجيل الدخول" : "Login"}</h3>
+              <button onClick={() => setIsLoginOpen(false)} className="text-gray-400 hover:text-gray-600 text-xs">✕</button>
             </div>
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                <label className="block text-[11px] font-bold text-gray-700 mb-1">{lang === "ar" ? "البريد الإلكتروني" : "Email Address"}</label>
                 <input
-                  type="email"
-                  required
-                  placeholder="example@orbit.com"
-                  value={email}
+                  type="email" required placeholder="example@orbit.com" value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-xl p-2.5 text-xs outline-none focus:border-primary"
                 />
                 <p className="text-[10px] text-gray-400 mt-1">{adminHint}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+                <label className="block text-[11px] font-bold text-gray-700 mb-1">{lang === "ar" ? "كلمة المرور" : "Password"}</label>
                 <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={password}
+                  type="password" required placeholder="••••••••" value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-xl p-2.5 text-xs outline-none focus:border-primary"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-all"
-              >
-                دخول
+              <button type="submit" className="w-full bg-primary text-on-primary py-2.5 rounded-xl text-xs font-bold hover:opacity-90 transition-all">
+                {lang === "ar" ? "دخول" : "Sign In"}
               </button>
             </form>
           </div>
@@ -207,59 +231,39 @@ function Navbar() {
       {/* ================= بوب اب الاشتراك ================= */}
       {isRegisterOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setIsRegisterOpen(false)}
-          ></div>
-          <div className="relative bg-white w-full max-w-md p-6 rounded-xl shadow-2xl z-10 animate-scaleUp">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsRegisterOpen(false)}></div>
+          <div className="relative bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl z-10">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-gray-900">إنشاء حساب جديد</h3>
-              <button
-                onClick={() => setIsRegisterOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1"
-              >
-                ✕
-              </button>
+              <h3 className="text-sm font-bold text-gray-900">{lang === "ar" ? "إنشاء حساب جديد" : "Create New Account"}</h3>
+              <button onClick={() => setIsRegisterOpen(false)} className="text-gray-400 hover:text-gray-600 text-xs">✕</button>
             </div>
             <form onSubmit={handleRegisterSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+                <label className="block text-[11px] font-bold text-gray-700 mb-1">{lang === "ar" ? "الاسم الكامل" : "Full Name"}</label>
                 <input
-                  type="text"
-                  required
-                  placeholder="أدخل اسمك الكريم"
-                  value={name}
+                  type="text" required placeholder={lang === "ar" ? "أدخل اسمك الكريم" : "Enter your full name"} value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-xl p-2.5 text-xs outline-none focus:border-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                <label className="block text-[11px] font-bold text-gray-700 mb-1">{lang === "ar" ? "البريد الإلكتروني" : "Email Address"}</label>
                 <input
-                  type="email"
-                  required
-                  placeholder="name@example.com"
-                  value={email}
+                  type="email" required placeholder="name@example.com" value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-xl p-2.5 text-xs outline-none focus:border-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+                <label className="block text-[11px] font-bold text-gray-700 mb-1">{lang === "ar" ? "كلمة المرور" : "Password"}</label>
                 <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={password}
+                  type="password" required placeholder="••••••••" value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-xl p-2.5 text-xs outline-none focus:border-primary"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-bold hover:bg-green-700 transition-all"
-              >
-                إنشاء حساب الحجز
+              <button type="submit" className="w-full bg-primary text-on-primary py-2.5 rounded-xl text-xs font-bold hover:opacity-90 transition-all">
+                {lang === "ar" ? "إنشاء حساب الحجز" : "Sign Up"}
               </button>
             </form>
           </div>

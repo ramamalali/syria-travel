@@ -3,27 +3,43 @@ import API from "@/Services/api";
 
 function HeroDashboard() {
   const [formData, setFormData] = useState({
-    headline_main: "",
-    headline_sub: "",
-    description: "",
-    btn_book: "",
-    btn_explore: ""
+    headline_main_ar: "",
+    headline_main_en: "",
+    headline_sub_ar: "",
+    headline_sub_en: "",
+    description_ar: "",
+    description_en: "",
+    btn_book_ar: "",
+    btn_book_en: "",
+    btn_explore_ar: "",
+    btn_explore_en: ""
   });
   
   const [loading, setLoading] = useState(true);
   const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
 
-  // 1. جلب البيانات الحالية من الباك آيند لملء الحقول تلقائياً
+  // 1. جلب البيانات الحالية بالكامل (الحقول العربية والإنجليزية) لملء الفورم
   useEffect(() => {
     API.get("/hero")
       .then((res) => {
         if (res.data) {
-          setFormData(res.data);
+          setFormData({
+            headline_main_ar: res.data.headline_main_ar || "",
+            headline_main_en: res.data.headline_main_en || "",
+            headline_sub_ar: res.data.headline_sub_ar || "",
+            headline_sub_en: res.data.headline_sub_en || "",
+            description_ar: res.data.description_ar || "",
+            description_en: res.data.description_en || "",
+            btn_book_ar: res.data.btn_book_ar || "",
+            btn_book_en: res.data.btn_book_en || "",
+            btn_explore_ar: res.data.btn_explore_ar || "",
+            btn_explore_en: res.data.btn_explore_en || ""
+          });
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.error("خطأ في جلب بيانات الـ Hero:", err);
+        console.error("خطأ في جلب بيانات الـ Hero للداشبورد:", err);
         setLoading(false);
       });
   }, []);
@@ -35,19 +51,18 @@ function HeroDashboard() {
     });
   };
 
-  // 2. إرسال التحديثات للباك آيند عند الضغط على حفظ
+  // 2. إرسال التحديثات المزدوجة للباك آيند عند الحفظ
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStatusMessage({ type: "info", text: "جاري حفظ التعديلات..." });
+    setStatusMessage({ type: "info", text: "جاري حفظ التعديلات للغتين..." });
 
     API.put("/hero", formData)
       .then((res) => {
-        setStatusMessage({ type: "success", text: "🎉 تم تحديث بيانات القسم الرئيسي (Hero) بنجاح!" });
-        // إخفاء الرسالة بعد 4 ثوانٍ
+        setStatusMessage({ type: "success", text: "🎉 تم تحديث بيانات القسم الرئيسي (Hero) باللغتين بنجاح!" });
         setTimeout(() => setStatusMessage({ type: "", text: "" }), 4000);
       })
       .catch((err) => {
-        console.error("خطأ في تحديث البيانات:", err);
+        console.error("خطأ في تحديث البيانات السحابية:", err);
         setStatusMessage({ type: "error", text: "❌ حدث خطأ أثناء الحفظ، يرجى المحاولة لاحقاً." });
       });
   };
@@ -57,14 +72,14 @@ function HeroDashboard() {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-4xl mx-auto bg-surface-container-lowest rounded-3xl shadow-xl border border-outline-variant/20 my-10">
+    <div className="p-6 md:p-10 max-w-4xl mx-auto bg-surface-container-lowest rounded-3xl shadow-xl border border-outline-variant/20 my-10" dir="rtl">
       
       {/* هيدر القسم */}
       <div className="flex items-center gap-3 border-b border-outline-variant/30 pb-6 mb-8">
         <span className="material-symbols-outlined text-3xl text-primary">view_carousel</span>
         <div>
           <h2 className="text-xl font-bold text-primary">التحكم بالقسم الرئيسي (Hero Section)</h2>
-          <p className="text-xs text-on-surface-variant">تعديل النصوص، العناوين العريضة وأزرار الحجز الظاهرة في واجهة الموقع</p>
+          <p className="text-xs text-on-surface-variant">تعديل النصوص، العناوين العريضة وأزرار الحجز باللغتين العربية والإنجليزية</p>
         </div>
       </div>
 
@@ -82,74 +97,138 @@ function HeroDashboard() {
       {/* الـ Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         
+        {/* صف العنوان الرئيسي المزدوج */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* العنوان الرئيسي */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-primary">العنوان الرئيسي العريض</label>
+            <label className="text-xs font-bold text-primary">العنوان الرئيسي العريض (عربي)</label>
             <input 
               required
               type="text"
-              name="headline_main"
-              value={formData.headline_main}
+              name="headline_main_ar"
+              value={formData.headline_main_ar}
               onChange={handleChange}
               className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium"
               placeholder="مثال: سوا نسافر..."
             />
           </div>
-
-          {/* العنوان الفرعي الملّون */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-primary">العنوان الفرعي (الملوّن)</label>
+          <div className="space-y-1.5" dir="ltr">
+            <label className="text-xs font-bold text-primary block text-right" dir="rtl">العنوان الرئيسي العريض (English)</label>
             <input 
               required
               type="text"
-              name="headline_sub"
-              value={formData.headline_sub}
+              name="headline_main_en"
+              value={formData.headline_main_en}
+              onChange={handleChange}
+              className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium text-left"
+              placeholder="Example: Let's travel together..."
+            />
+          </div>
+        </div>
+
+        {/* صف العنوان الفرعي المزدوج */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-primary">العنوان الفرعي الملوّن (عربي)</label>
+            <input 
+              required
+              type="text"
+              name="headline_sub_ar"
+              value={formData.headline_sub_ar}
               onChange={handleChange}
               className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium"
               placeholder="مثال: سوريا بكل تفاصيلها"
             />
           </div>
-        </div>
-
-        {/* الوصف المطول */}
-        <div className="space-y-1.5">
-          <label className="text-xs font-bold text-primary">الوصف والفقرة الترحيبية</label>
-          <textarea 
-            required
-            rows="3"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium resize-none"
-            placeholder="اكتب نبذة قصيرة تشجع الزوار على استكشاف الموقع..."
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* نص زر الحجز */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-primary">نص زر الحجز الرئيسي</label>
+          <div className="space-y-1.5" dir="ltr">
+            <label className="text-xs font-bold text-primary block text-right" dir="rtl">العنوان الفرعي الملوّن (English)</label>
             <input 
               required
               type="text"
-              name="btn_book"
-              value={formData.btn_book}
+              name="headline_sub_en"
+              value={formData.headline_sub_en}
+              onChange={handleChange}
+              className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium text-left"
+              placeholder="Example: Syria in all its details"
+            />
+          </div>
+        </div>
+
+        {/* الوصف المطول - عربي */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-bold text-primary">الوصف والفقرة الترحيبية (عربي)</label>
+          <textarea 
+            required
+            rows="3"
+            name="description_ar"
+            value={formData.description_ar}
+            onChange={handleChange}
+            className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium resize-none"
+            placeholder="اكتب نبذة قصيرة تشجع الزوار باللغة العربية..."
+          />
+        </div>
+
+        {/* الوصف المطول - إنجليزي */}
+        <div className="space-y-1.5" dir="ltr">
+          <label className="text-xs font-bold text-primary block text-right" dir="rtl">الوصف والفقرة الترحيبية (English)</label>
+          <textarea 
+            required
+            rows="3"
+            name="description_en"
+            value={formData.description_en}
+            onChange={handleChange}
+            className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium resize-none text-left"
+            placeholder="Write a short description to encourage visitors in English..."
+          />
+        </div>
+
+        {/* أزرار الحجز والاستكشاف - عربي */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-primary">نص زر الحجز الرئيسي (عربي)</label>
+            <input 
+              required
+              type="text"
+              name="btn_book_ar"
+              value={formData.btn_book_ar}
               onChange={handleChange}
               className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium"
             />
           </div>
-
-          {/* نص زر الاستكشاف */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-primary">نص زر استكشاف الوجهات</label>
+            <label className="text-xs font-bold text-primary">نص زر استكشاف الوجهات (عربي)</label>
             <input 
               required
               type="text"
-              name="btn_explore"
-              value={formData.btn_explore}
+              name="btn_explore_ar"
+              value={formData.btn_explore_ar}
               onChange={handleChange}
               className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium"
+            />
+          </div>
+        </div>
+
+        {/* أزرار الحجز والاستكشاف - إنجليزي */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" dir="ltr">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-primary block text-right" dir="rtl">نص زر الحجز الرئيسي (English)</label>
+            <input 
+              required
+              type="text"
+              name="btn_book_en"
+              value={formData.btn_book_en}
+              onChange={handleChange}
+              className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium text-left"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-primary block text-right" dir="rtl">نص زر استكشاف الوجهات (English)</label>
+            <input 
+              required
+              type="text"
+              name="btn_explore_en"
+              value={formData.btn_explore_en}
+              onChange={handleChange}
+              className="w-full border border-outline-variant rounded-xl p-3 text-xs bg-surface-container-low focus:border-primary focus:ring-1 focus:ring-primary outline-none font-medium text-left"
             />
           </div>
         </div>
