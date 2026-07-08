@@ -574,7 +574,7 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
                           value={phoneNumber}
                           onChange={(e) => {
                             const value = e.target.value.replace(/\D/g, "");
-                            if (value.length <= 6) {
+                            if (value.length <= 9) {
                               setPhoneNumber(value);
                             }
                           }}
@@ -674,3 +674,9 @@ function BookingModal({ isModalOpen, handleCloseModal, destination }) {
 }
 
 export default BookingModal;
+
+
+
+
+
+
